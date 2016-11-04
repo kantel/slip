@@ -24,5 +24,50 @@
 </figure>
 <h2 id="was-ist-slip">Was ist SLIP?</h2>
 <p>Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrieben, laut Wikipedia in MAD-SLIP. Die Sprache SLIP wurde von Weizenbaum selber entwickelt.</p>
+<ul>
+<li>SLIP: <strong>S</strong>ymmetric <strong>LI</strong>st <strong>P</strong>rocessor</li>
+<li>SLIP ist eine Sammlung von Routinen für Listen, die in eine höhere Programmiersprache (Wirtssprache) eingebettet werden können.</li>
+<li>SLIPs Kernroutinen wurden in Assembler geschrieben, die anderen in der Wirtssprache implementiert.</li>
+</ul>
+<p>Es gab drei Versionen von SLIP:</p>
+<ul>
+<li>FORTRAN-SLIP (eingebettet in FORTRAN IV, 1963)</li>
+<li>MAD-SLIP (eingebettet in MAD – Michigan Algorithm Decoder)</li>
+<li>ALGOL-SLIP (eingebettet in ALGOL 60)</li>
+</ul>
+<p>Das Einbetten von SLIP in eine andere Programmiersprache, hatte den Vorteil, daß der Programmierer keine neue Sprache lernen mußte, sondern nur die Routinen zur Listenverarbeitung.</p>
+<figure>
+<img src="images/mad.jpg" alt="MAD is not Alfred" /><figcaption>MAD is not Alfred</figcaption>
+</figure>
+<p>MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache <strong>MAD</strong> ()<strong>M</strong>ichigan <strong>A</strong>lgorithm <strong>D</strong>ecoder) war eine von ALGOL beeinflußte Sprache, die unter anderem auf den IBM 7094 Mainframes mit dem Timesharing-Betriebssystem CTSS lief. CTSS wurde Anfang der 1960er-Jahre am MIT entwickelt und bis 1973 genutzt.</p>
+<p>Weizenbaum nennt vier frühere List-Prozessoren, die SLIP beeinflußt haben:</p>
+<p><strong>IPL-V (Information Processing Language)</strong> ist eine Computersprache, die 1956 von <em>Allen Newell</em>, <em>Cliff Shaw</em> und <em>Herbert A. Simon</em> bei der RAND Corporation und dem Carnegie Institute of Technology entwickelt wurde. Bis sich LISP durchsetzte, war IPL lange Jahre die Sprache der KI-Forschung, in der zum Beispiel die Programme Logic Theorist (1956), General Problem Solver (GPS, 1957) und das Computer-Schachprogramm NSS implementiert wurden.</p>
+<p><strong>FLPL</strong> steht für FORTRAN List Processing Language und wurde bei IBM 1958 für die IBM 704 entwickelt, um damit KI-Programme zu entwickeln (speziell einen Therom-Prüfer für Geometrie nach einer Idee von Marvin Minsky).</p>
+<p><strong>The Threaded List Language</strong> wurde 1960 von <em>A.J. Perlis</em> und <em>Charles Thornton</em> auf einem »650 Computer System« am Carnegie Institute of Technology in Pittsburgh in Assembler (TASS) implementiert.</p>
+<p><strong>Knotted Lists Structures</strong> (KLS) – von Weizenbaum selber geschrieben, ist der direkte Vorgänger von SLIP.</p>
+<p>SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.</p>
+<h3 id="exkurs-lisp">Exkurs: LISP</h3>
+<p><strong>LISP</strong> (<strong>LIS</strong>t <strong>P</strong>rocessing) entstand 1958/1959 am MIT und gehört bis heute zu den wichtigsten Programmiersprachen der Künstlichen Intelligenz (KI).</p>
+<h2 id="die-hardware-ibm-7094">Die Hardware: IBM 7094</h2>
+<p>SLIP lief auf einer (damals brandneuen – 1962) IBM 7094, dem Nachfolgemodell der IBM 7090. Die IBM 7090 war der erste Transistor-Großrechner für den wissenschaftlichen Bereich, den IBM herstelte, das Vorgängermodelle (IBM 704-Serie) wurden noch mit Röhren betrieben.</p>
+<figure>
+<img src="images/ibm7094console.jpg" alt="Die Hardware: IBM 7094" /><figcaption>Die Hardware: IBM 7094</figcaption>
+</figure>
+<p>Zur Größenordnung: Ein »typisches« System kostete damals etwa 2,9 Millionen US-Dollar (umgerechnet auf die heutige Kaufkraft ca. 23,5 Millionen Dollar), man konnte es aber auch für 63.500 US-Dollar/Monat mieten (umgerechnet auf heutige Kaufkraft ca. 500.000 Dollar).</p>
+<p>Die technischen Daten der IBM 7094</p>
+<ul>
+<li>Die Rechner der 7000er-Serie – wie schon die Vorgängermodelle – besaßen eine Wortlänge von 36 Bit</li>
+<li>Das Befehlsformat hatte einen 3 Bit-Prefix, ein 15 Bit Decrement und eine 15-Bit Adresse</li>
+<li>Fixpoint Zahlen wurden binär mit einem Bit für das Vorzeichen direkt gespeichert</li>
+<li>Einfache Fließkommazahlen wurden mit einem 8-Bit Exponenten und einer 27-Bit-Mantisse dargestellt</li>
+<li>Double-Float (neu in der IBM 7094) hatten ebenfalls einen 8-Bit Exponenten und eine 54-Bit-Mantisse</li>
+<li>Alphanumerische Werte wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort</li>
+</ul>
+<h2 id="joseph-weizenbaum">Joseph Weizenbaum</h2>
+<ul>
+<li>1952 - 1963: Systemingenieur im Computer Development Laboratory der General Electric Corporation, dort wurde SLIP entwickelt.</li>
+<li>ab 1963: Massachusetts Institute of Technology (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science.</li>
+<li>1966: ELIZA</li>
+</ul>
 </body>
 </html>
