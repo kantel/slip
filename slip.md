@@ -67,3 +67,7 @@ Die technischen Daten der IBM 7094
   * 1952 - 1963: Systemingenieur im Computer Development Laboratory der General Electric Corporation, dort wurde SLIP entwickelt.
   * ab 1963: Massachusetts Institute of Technology (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science.
   * 1966: ELIZA
+  
+## Literatur
+
+  * Alexander Neumann: *[Vor 60 Jahren: IBM veröffentlicht erste Sprachspezifikation für Fortran](https://www.heise.de/developer/meldung/Vor-60-Jahren-IBM-veroeffentlicht-erste-Sprachspezifikation-fuer-Fortran-3351318.html)*, heise Developer vom 17. Oktober 2016
