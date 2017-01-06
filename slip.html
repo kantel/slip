@@ -64,14 +64,93 @@
 <li>Alphanumerische Werte wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort</li>
 </ul>
 <h2 id="joseph-weizenbaum">Joseph Weizenbaum</h2>
+<p>Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im Computer Development Laboratory der General Electric Corporation, dort wurde SLIP entwickelt, 1963 ging er zum <em>Massachusetts Institute of Technology</em> (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA</p>
+<h2 id="slip">SLIP</h2>
+<p>SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.</p>
+<p>Ein <strong>SLIP-Listenelement</strong> bestand aus einem Wort-Paar, bestehend aus zwei aufeinanderfolgenden Speichereinheiten (Wörtern): Das erste Wort enthielt ein ID-Feld, ein LINKL- (link left) und ein LINKR- (link right) Feld:</p>
+<figure>
+<img src="images/slipzelle.png" alt="Eine Slip-Zelle" /><figcaption>Eine Slip-Zelle</figcaption>
+</figure>
 <ul>
-<li>1952 - 1963: Systemingenieur im Computer Development Laboratory der General Electric Corporation, dort wurde SLIP entwickelt.</li>
-<li>ab 1963: Massachusetts Institute of Technology (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science.</li>
-<li>1966: ELIZA</li>
+<li>das ID-Feld hatte folgende Bedeutungen:
+<ul>
+<li>0: Das Datum enthält nicht den Namen der Liste</li>
+<li>1: Das Datum enthält den Namen der Liste</li>
+<li>2: Die Zelle ist der Header der Liste 3: Die Zelle ist ein <code>READER</code> einer Liste</li>
+</ul></li>
+<li><code>LINKL</code> und <code>LINKR</code> zeigten auf das vorherige oder das nachfolgende Listenelement</li>
+<li>Alle Zellen (mit Ausnahme der <code>READER</code>) gehörten einer und nur einer Liste</li>
+</ul>
+<p>Jede Liste besitzt nur einen <strong>Header</strong> mit der <code>ID=2</code>. Das zweite Element eines Headers enthält kein Datum, sondern ist wie in der Abbildung aufgeteilt:</p>
+<figure>
+<img src="images/listheader.png" alt="Ein Listen-Header" /><figcaption>Ein Listen-Header</figcaption>
+</figure>
+<ul>
+<li>In <code>LSTMRK</code> stehen dem Nutzer zwei Bit, die der Programmierer für Markierungen nutzen kann</li>
+<li><code>DESCR. LIST</code> zeigt auf eine Listenbeschreibung (einen Hash) -- wenn vorhanden</li>
+<li>Der <code>REF. COUNT</code> zeigt an, wie oft diese Liste als eine Sub-Liste verwendet wird</li>
+<li>Wenn <code>ID=1</code> wurde durch Konvention <code>LNKL</code> und <code>LNKR</code> im Datumsbereich jeweils mit dem Namen einer (und nur einer) Liste belegt. So wurden Beziehungen zwischen Listen und Sublisten geknüpft.</li>
+<li>Jede Liste konnte auch eine Subliste sein.</li>
+</ul>
+<h3 id="slip-programmstruktur">SLIP-Programmstruktur</h3>
+<p>SLIP besaß in der Originalversion 99 Befehle, davon waren knapp 20 in Assembler programmiert, die anderen als FORTRAN-Funktionen implementiert.</p>
+<p>Nicht alle Befehle waren für den Anwendungsprogrammierer, einige waren auch für die Programmierung von SLIP notwendig</p>
+<p>Die Zahl der Befehle reduziert sich auch noch einmal, wenn man berücksichtigt, daß wegen der Symmetrie alle Listenbefehle doppelt vorhanden waren.</p>
+<p>Naturgemäß besaß SLIP sehr viele Befehle, die für die dynamische Generierung von Listen, dem Hinzufügen und Entfernen von Zellen und dem Zugriff auf die einzelnen Zellen benötigt wurden.</p>
+<h3 id="sequenzer-und-reader">»Sequenzer« und »Reader«</h3>
+<p>Ein Sequencer ist ein Mechanismus, der eine Operation auf alle Zellen einer Liste nacheinander ausführt. Auch hier ist SLIP symmetrisch. Der Programmierer konnte festlegen, ob die Sequenz von unten nach oben oder von oben nach unten durchgeführt werden soll.</p>
+<figure>
+<img src="images/reader.png" alt="Eine SLIP Reader-Zelle" /><figcaption>Eine SLIP Reader-Zelle</figcaption>
+</figure>
+<p>Ein <em>Sequencer</em> konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein <em>Reader</em> implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS holte. Dabei ist <code>LPNTR</code> die Adresse der aktuellen Zelle, <code>LOFRDR</code> ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, <code>LCNTR</code> ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und link zeigt auf den nächsten Reader im Stack.</p>
+<p>Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.</p>
+<h3 id="description-list">Description List</h3>
+<p>Eine <em>Description List</em> ist ein Attribut-Wert-Paar (Hash, Dictionary), bestehend aus einem Zellen-Paar, die erste Zelle enthält das Attribut, die zweite Zelle den Wert. Description Lists sind keine Sublisten, sondern gehören zu dem Listenheader, der auf sie zeigt. Als Konsequenz können Description Lists nicht mit den SLIP-Listenbefehlen manipuliert werden. Dafür besaß SLIP einen eigenen Satz von Befehlen.</p>
+<h3 id="garbage-collection">Garbage Collection</h3>
+<p>Da SLIPs Listen dynamisch generiert wurden, waren Routinen zur Speicherbelegung und -freigabe erforderlich. Im Gegensatz zu LISP, das damals schon einen automatischen <em>Garbage Collector</em> besaß, wurde dies in SLIP teils vom Programm, teils vom Programmierer erledigt.</p>
+<p>Für die dynamische Speicherbelegung nutzte SLIP eine list of available spaces (LAVS). Genaugenommen ist dies keine SLIP-Liste, da diese nur in eine Richtung gelesen und geschrieben werden konnte.</p>
+<p>LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr referenziert wurde.</p>
+<p>Der Programmierer konnte festlegen, ob in diesem Falle die Liste vom Programm gelöscht und der Speicherplatz freigegeben wird oder ob sie im Speicher bleibt, weil sie später noch einmal benötigt wird.</p>
+<h3 id="rekursion">Rekursion</h3>
+<p>SLIP erlaubte Rekursionen, die auf einem Stack arbeiteten. Über die mögliche Rekursionstiefe ist mir leder nichts bekannt, aber sie kann nicht sehr groß gewesen sein.</p>
+<h3 id="input---output">Input - Output</h3>
+<p>Für die (Nutzer-) Eingaben und die (Programm-) Ausgaben nutzte SLIP die Möglichkeiten des Wirtssystems. Ohne diese wäre ein Programm wie ELIZA auch gar nicht möglich gewesen. Zusätzlich gab es jedoch einen Satz von Befehlen, mit denen SLIP-Listen direkt von Lochkarten eingelesen und direkt auf Lochkarten geschrieben werden konnten.</p>
+<h2 id="warum-slip">Warum SLIP?</h2>
+<ul>
+<li>SLIP war nicht für die KI-Forschung entwickelt worden, sondern als Werkzeug für numerische Berechnungen, Manipulation algebraischer Ausdrücke und Netzwerk- und Graphenanalysen.</li>
+<li>Für die Entwicklung von ELIZA war es sicher vorteilhaft, auf symmetrischen Listen operieren zu können.</li>
+<li>Weil es geht! (SLIP war ein Kind von Joseph Weizenbaum und jeder arbeitet gerne mit einem Werkzeug, das er selber erstellt hat.)</li>
+</ul>
+<h2 id="dynamo-eine-interessante-parallele">DYNAMO – eine interessante Parallele</h2>
+<p><strong>DYNAMO</strong> (<strong>DYNA</strong>mic <strong>MO</strong>dels) war eine Simulationssprache (mit begleitender graphischer Notation) für den Bereich System Dynamics. Die Sprache wurde 1958 unter der Leitung von Jay Wright Forrester am MIT entwickelt. Die erste Version war in Assembler für die IBM 704, 709 und 7090 entwickelt, DYNAMO II war in AED-0, einer erweiterten Version von Algol 60, geschrieben und ab 1971 waren Dynamo II/F und Dynamo 3 in Gebrauch, die in FORTRAN geschrieben waren.</p>
+<p>Dynamo wurde bis Mitte der 1980 Jahre für die Simulation dynamischer Systeme genutzt, es gab Anfang der 1980 Jahre auch eine Version für Personal Computer (micro-Dynamo).</p>
+<p>Der erste Bericht »Die Grenzen des Wachstums« an den Club of Rome beruhte auf Simulationen, die mit Dynamo durchgeführt wurden.</p>
+<p>Dynamo ist eine DSL</p>
+<h2 id="und-warum-nicht-lisp">Und warum nicht LISP?</h2>
+<p>Seit 1958 wurde LISP von <em>John McCarthy</em> am MIT entwickelt und von einer Gruppe von Studenten um McCarthy und <em>Marvin Minsky</em> (seit 1959 am MIT) intensiv genutzt und ersetzte dort das bis dahin verwendete IPL. LISP wurde zuerst auf einer IBM 704 des MIT entwickelt, nachdem die Gruppe aber feststellte, daß diese nicht gegnügend Speicher für ihre Programme besaß, auf einer DEC PDP-1 implementiert. Dann folgte eine PDP-6 und eine PDP-10.</p>
+<p>1963 stieß <em>Jean Piaget</em> als Co-Direktor zu der Gruppe um Marvin Minsky, während McCarthy nach Stanford ging (wo er ebenfalls mit einer PDP-6 und später mit einer PDP-10 arbeiten konnte).</p>
+<p>Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art <em>Cultural Clash</em> zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld).</p>
+<p>Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Dies ist aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument.</p>
+<h2 id="und-so-ist-slip-die-sprache-zwischen-den-stühlen">Und so ist SLIP die Sprache zwischen den Stühlen</h2>
+<ul>
+<li>Auf dem einen Stuhl FORTRAN, ALGOL, (MAD), die Mainframe-Boliden</li>
+<li>Dazwischen (ohne Stuhl) SLIP</li>
+<li>Auf dem anderen Stuhl LISP, die (neue) Sprache der KI, die in der Regel auf Workstation und MDT-Rechnern zum Einsatz kam</li>
 </ul>
 <h2 id="literatur">Literatur</h2>
 <ul>
+<li>Digital Computer Laboratory der University of Illinois: <em>A User's Reference Manual For The Michigan Algorithm Decoder (MAD) For The IBM 7090</em>, 1962</li>
 <li>Alexander Neumann: <em><a href="https://www.heise.de/developer/meldung/Vor-60-Jahren-IBM-veroeffentlicht-erste-Sprachspezifikation-fuer-Fortran-3351318.html">Vor 60 Jahren: IBM veröffentlicht erste Sprachspezifikation für Fortran</a></em>, heise Developer vom 17. Oktober 2016</li>
+<li>Nils J. Nilson: <em>The Quest for Artificial Intelligence. A History of Ideas and Achievements</em>, New York (Cambridge University Press) 2010</li>
+<li>A.J. Perlis, Charles Thornton: <em>Symbol Manipulation by threaded lists,</em>, Communications of the ACM, Volume 3, Issue 4, April 1960</li>
+<li>Douglas K. Smith: <em>An Introduction to the List-Processing Language SLIP</em>, in Saul Rosen (ed.) Programming Systems and Languages, New York (McGraw-Hill) 1967, p. 393-418</li>
+<li>Joseph Weizenbaum et. al.: <em>Knotted List Structures</em>, Sunnyvale, Ca. (Computer Organization Unit – General Electric Computer Laboratory) 1962</li>
+<li>Joseph Weizenbaum: <em>Symmetric List Processor</em>, Communications of the ACM, Volume 6, Number 9, September 1963, p. 524-536</li>
+<li>Joseph Weizenbaum: <em>ELIZA – A Computer Program For the Study of Natural Language Communication Between Man And Machine</em>, Communications of the ACM, Volume 9, Number 1, January 1966, p. 36-45</li>
+<li>Joseph Weizenbaum: <em>Recovery of Reentrant List Structures in SLIP</em>, Communications of the ACM, Volume 12, Number 7, July 1969, p. 370-372</li>
+<li>Joseph Weizenbaum: <em>Die Macht der Computer und die Ohnmacht der Vernunft</em>, Frankfurt/Main (Suhrkamp), 2. Auflage 1980</li>
+<li>Richard L. Wexelblat (ed.): <em>History of Programming Languages</em>, New York (Academic Press) 1981</li>
 </ul>
+<h2 id="bildnachweise">Bildnachweise</h2>
 </body>
 </html>
