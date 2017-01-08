@@ -20,7 +20,7 @@ Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrie
 
 Es gab drei Versionen von SLIP, zuerst das 1963 entwickelte  FORTRAN-SLIP (eingebettet in FORTRAN IV), danach das vor 1966 in MAD implementierte MAD-SLIP, die Version, in der Weizenbaum ELIZA schrieb und schließlich das um 1968/1969 entstandene ALGOL-SLIP, dessen Wirtssprache ALGOL 60 war.
 
-Dieser Beitrag beschäftigt sich vornehmlich mit MAD-SLIP, wegen der dünnen Quellenlage wurde aber auch auf Veröffentlichungen zu den anderen SLIP-Dialekten zurückgegriffen. Es ist anzunehmen, daß die Unterschiede zwischen diesen Dialekten nicht allzu signifikant waren. Lediglich bei der *Garbage Collection* (siehe weiter unten) könnte Weizenbaum auf Eigenschaften zurückgegriffen haben, die nur in der Wirtssprache ALGOL 60 zur Verfügung standen und das in den Vorgängerversionen die Speicherbereinigung noch von Hand erfolgen mußte.
+Dieser Beitrag beschäftigt sich vornehmlich mit MAD-SLIP, wegen der dünnen Quellenlage wurde aber auch auf Veröffentlichungen zu den anderen SLIP-Dialekten zurückgegriffen. Es ist anzunehmen, daß die Unterschiede zwischen diesen Dialekten nicht allzu signifikant waren.
 
 Das Einbetten von SLIP in eine andere Programmiersprache hatte den Vorteil, daß der Programmierer, der mit der Wirtssprache vertraut war, keine neue Sprache lernen mußte, sondern nur die neu hinzugekommenen Routinen zur Listenverarbeitung.
 
@@ -144,13 +144,16 @@ LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr
 
 Der Programmierer konnte festlegen, ob in diesem Falle die Liste vom Programm gelöscht und der Speicherplatz freigegeben wird oder ob sie im Speicher bleibt, weil sie später noch einmal benötigt wird.
 
-Es ist möglich, daß es diese halbautomatische Form der Speicherbereinigung erst in ALGOL-SLIP gab und daß in den früheren Versionen, also auch in MAD-SLIP die *Garbage Collection* alleine vom Programmierer zu erledigen war. Weizenbaum hat nämlich erst zu dieser letzten SLIP-Version über die *Garbage Collection*  von SLIP publiziert[^algolslip].
+Obwohl Weizenbaum erst zur ALGOL-SLIP-Version über die *Garbage Collection*  von SLIP publiziert[^algolslip] hatte, war diese teils vom Programm, teils vom Programmierer zu übernehmende Speicherbereinigung schon Teil der ersten FORTRAN-SLIP-Version[^gaco]. Es gab zwei Befehle für den Programmierer zur Speicherbereinigung, `INITAS(SPACE, N)`, die eine LAVS erzeugte und Speicher zur Verfügung stellte (folgerichtig mußte `INITAS`der erste Befehl eines SLIP-Programms sein, das SLIP-Listen benutzte) und `IRALST(L)`, das den Speicher der Liste `L` und eins dekrementierte. SLIP intern benutzte noch die Funktionen `NUCELL(DUMMY)` und `RCELL(A)`. Die erste Funktion überprüfte, ob die LAVS überhaupt noch Speicher zur Verfügung stellen konnte und gab -- wenn nicht -- eine Fehlermeldung aus und die zweite fügte die Listenzelle A an das Ende der LAVS (zur Erinnerung: Die LAVS konnte nur in eine Richtung gelesen und beschrieben werden).
 
 [^algolslip]: Vgl. [Weizenbaum 1969]
+[^gaco]: Vgl. [Smith 1967], Seite 397-399
 
 ### Rekursion
 
-SLIP erlaubte Rekursionen, die auf einem Stack arbeiteten. Über die mögliche Rekursionstiefe ist mir leider nichts bekannt, aber sie kann nicht sehr tief gewesen sein.
+SLIP erlaubte Rekursionen, die auf einem Stack arbeiteten. Über die mögliche Rekursionstiefe ist mir leider nichts bekannt, aber sie kann nicht sehr tief gewesen sein. Das Beispiel in [Smith 1967], die klassische, rekursive Berechnung der Fakultät, enthält eine maximale Rekursionstiefe von drei[^rec]. Hier fiel SLIP vermutlich weit hinter die Möglichkeiten von LISP zurück.
+
+[^rec]: Vgl. [Smith 1967], Seite 407-408
 
 ### Input - Output
 
