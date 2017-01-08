@@ -63,7 +63,9 @@ Eines der ersten Projekte mit IPL war der Versuch eines automatisierten, compute
 
 ### Exkurs: LISP
 
-**LISP** (**LIS**t **P**rocessing) entstand 1958/1959 am MIT und gehört bis heute zu den wichtigsten Programmiersprachen der Künstlichen Intelligenz (KI).
+**LISP** (**LIS**t **P**rocessing) entstand 1958/1959 am MIT und gehört bis heute zu den wichtigsten Programmiersprachen der Künstlichen Intelligenz (KI). LISP ist nach FORTRAN die zweitälteste Programmiersrpache, die heute noch verbreitet ist. LISP wurde entweder interpretiert oder (in späteren Versionen) von einem Compiler zur schnelleren Verarbeitung in eine Maschinensprache übersetzt. In den 1970er und 1980er Jahren gab es auch spezielle LISP-Maschinen, die trotz Typ-Überprüfung und *Garbage Collection* LISP-Programme schneller ausführen konnten als die anderen, damals üblichen Rechner. Warum Weizenbaum ELIZA in SLIP und nicht in LISP schrieb, versuche ich am Ende dieses Beitrages zu erläutern.
+
+Seit den 1980er Jahren wurde *Macintosh Common Lisp* (MCL) am *Media Lab* des MIT intensiv genutzt. MCL war auch an vielen anderen Forschungsinstituten der Künstlichen Intelligenz (KI) besonders in den USA sehr populär. Dennoch hat MCL nie den Sprung auf die Intel-basierten neuen Apple-Computer mit MacOS X geschafft.
 
 ## Die Hardware: IBM 7094[^7094]
 
