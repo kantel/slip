@@ -144,7 +144,7 @@ LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr
 
 Der Programmierer konnte festlegen, ob in diesem Falle die Liste vom Programm gelöscht und der Speicherplatz freigegeben wird oder ob sie im Speicher bleibt, weil sie später noch einmal benötigt wird.
 
-Obwohl Weizenbaum erst zur ALGOL-SLIP-Version über die *Garbage Collection*  von SLIP publiziert[^algolslip] hatte, war diese teils vom Programm, teils vom Programmierer zu übernehmende Speicherbereinigung schon Teil der ersten FORTRAN-SLIP-Version[^gaco]. Es gab zwei Befehle für den Programmierer zur Speicherbereinigung, `INITAS(SPACE, N)`, die eine LAVS erzeugte und Speicher zur Verfügung stellte (folgerichtig mußte `INITAS`der erste Befehl eines SLIP-Programms sein, das SLIP-Listen benutzte) und `IRALST(L)`, das den Speicher der Liste `L` und eins dekrementierte. SLIP intern benutzte noch die Funktionen `NUCELL(DUMMY)` und `RCELL(A)`. Die erste Funktion überprüfte, ob die LAVS überhaupt noch Speicher zur Verfügung stellen konnte und gab -- wenn nicht -- eine Fehlermeldung aus und die zweite fügte die Listenzelle A an das Ende der LAVS (zur Erinnerung: Die LAVS konnte nur in eine Richtung gelesen und beschrieben werden).
+Obwohl Weizenbaum erst zur ALGOL-SLIP-Version über die *Garbage Collection*  von SLIP publiziert[^algolslip] hatte, war diese teils vom Programm, teils vom Programmierer zu übernehmende Speicherbereinigung schon Teil der ersten FORTRAN-SLIP-Version[^gaco]. Es gab zwei Befehle für den Programmierer zur Speicherbereinigung, `INITAS(SPACE, N)`, die eine LAVS erzeugte und Speicher zur Verfügung stellte (folgerichtig mußte `INITAS` der erste Befehl eines SLIP-Programms sein, das SLIP-Listen benutzte) und `IRALST(L)`, das den Speicher der Liste `L` und eins dekrementierte. SLIP intern benutzte noch die Funktionen `NUCELL(DUMMY)` und `RCELL(A)`. Die erste Funktion überprüfte, ob die LAVS überhaupt noch Speicher zur Verfügung stellen konnte und gab -- wenn nicht -- eine Fehlermeldung aus und die zweite fügte die Listenzelle A an das Ende der LAVS (zur Erinnerung: Die LAVS konnte nur in eine Richtung gelesen und beschrieben werden).
 
 [^algolslip]: Vgl. [Weizenbaum 1969]
 [^gaco]: Vgl. [Smith 1967], Seite 397-399
@@ -165,6 +165,8 @@ SLIP war ursprünglich nicht für die KI-Forschung entwickelt worden, sondern al
 
 Für die Entwicklung von ELIZA war es nicht nur vorteilhaft, auf symmetrischen Listen operieren zu können, sondern es spielte mit Sicherheit eine große Rolle, daß MAD-SLIP sich durch das CTSS des MIT vom Stapelbetrieb befreien und im Dialog mit dem Nutzer laufen konnte. Das war zur damaligen Zeit neu und keineswegs selbstverständlich.
 
+SLIPs Listen -- obwohl für einen anderen Zweck (Graphen) entworfen -- unterstützten Weiszenbaum natürlich bei der Entwicklung von ELIZA. Denn bis FORTRAN 77 kannte FORTRAN keinen Datentyp `CHARACTER` und schon gar keinen Datentyp `STRING`, sondern nur die typlosen *Hollerith Konstanten*, mit denen eine Textverarbeitung nur sehr schwer zu implementieren war. Die Quellen der Original-ELIZA-Implementierung sind zwar verschollen, doch aufgrund der damaligen Wortgröße und der Größe der Listenzellen von SLIP ist davon auszugehen, daß jede Zelle einen Buchstaben (`CHARACTER`) enthielt und die Listen Wörter oder Phrasen darstellten, die dann mit den SLIP-Befehlen für die damalige Zeit recht komfortabel bearbeitet werden konnten. Denn auch wenn das Zusammensetzen der Wörter und Phrasen aus einzelnen Buchstaben-Zellen aus heutiger Sicht ziemlich mühsam ist, war es im Gegensatz zu den Hollerith-Konstanten damals ein riesiger Fortschritt.
+
 Und sicher spielte das Hauptargument aller Programmierer seltsamer Dinge dabei eine Rolle: »Weil es geht!« Denn SLIP war ein Kind von Joseph Weizenbaum und welcher Vater spielt nicht gerne mit seinem Kind.
 
 ## DYNAMO – eine interessante Parallele
@@ -183,32 +185,48 @@ Seit 1958 wurde LISP von *John McCarthy* am MIT entwickelt und von einer Gruppe 
 
 1963 stieß *Jean Piaget* als Co-Direktor zu der Gruppe um Marvin Minsky, während McCarthy nach Stanford ging (wo er ebenfalls mit einer PDP-6 und später mit einer PDP-10 arbeiten konnte).
 
-Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art *Cultural Clash* zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld).
+Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art *Cultural Clash* zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld, denn alle Beteiligten waren ungefähr im gleichen Alter).
 
 Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Dies ist aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument.
 
-Außerdem erzählte *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft. Es ist anzunehmen, daß dies zu einem Zerwürfnis zwischen den beiden führte und dies eine der Gründe für den Widerwillen Weizenbaums gegenüber LISP war.
+Außerdem erzählte *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft[^arpa]. Zu seiner antimilitaristischen Einstellung sagte Weizenbaum[^sief]:
+
+>[…] die Rolle des MIT in der Waffentwicklung haben mein kritisches Bewußtsein geweckt. Und als ich einmal angefangen hatte, in dieser Richtung nachzudenken, konnte ich nicht mehr aufhören.
+
+[^arpa]: Über die Unterstützung der Gruppe um Minsky und MacCarthy durch das amerikanische Verteidigungsministerium via ARPA vgl. [Nilson 2010], Seiten 118ff.
+
+[^sief]: [Siefkes 1999], Seite 46
+
+Es ist möglich, daß dies zu einem Zerwürfnis zwischen Weizenbaum und der Gruppe um McCarthy führte und dies eine der Gründe für den Widerwillen Weizenbaums gegenüber LISP war.
 
 [^coy]: Vgl. seinen Beitrag in diesem Band
 
 ## Und so blieb SLIP die Sprache zwischen den Stühlen
 
-Auf dem einen Stuhl saßen mit FORTRAN und ALGOL (und vorrübergehend auch MAD) die Sprachen der Mainframe-Boliden, die im Falle von ALGOL bis in die 1980er Jahre und im Falle von FORTRAN sogar bis heute das Feld dominieren.
+Auf dem einen Stuhl saßen mit FORTRAN und ALGOL (und vorrübergehend auch MAD) die Sprachen der Mainframe-Boliden, die im Falle von ALGOL bis in die 1980er Jahre und im Falle von FORTRAN sogar bis heute[^heise] das Feld dominieren[^ens].
+
+[^heise]: Vgl. [Neumann 2016]
+
+[^ens]: Zur Frühgeschichte4 von FORTRAN vgl. auch [Ensmenger 1999], Seiten 90-93
 
 Auf dem zweiten Stuhl hockte LISP, die (neue) Sprache der KI, die weniger auf Mainframes, sondern mehr auf Workstations und MDT-Rechnern[^MDT] (und später auch auf Personalcomputern) das Forschungsfeld der Künstlichen Intelligenz dominierte.
 
-Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde.
+Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie *Nathan Ensmenger* feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten, ALGOL in den USA (im Gegensatz zu Europa) eher als intelektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen[^ens2].
+
+[^ens2]: [Ensmenger 2010], Seite 104
 
 [^MDT]: MDT: **M**ittlere **D**aten**T**echnik
 
 
 ## Literatur
 
+  * [Ensmenger 2010] Nathan Ensmenger: *The Computer Boys Take Over. Computers, Programmers, and the Politics of Technical Expertise*, Cambridge, MA (MIT Press) 2010
   * [Gelernter 1960] H. Gelernter, J. R. Hansen, C. L. Gerberich: *A Fortran-Compiled List-Processing Language*, Journal of the ACM, Volume 7 Issue 2, April 1960, Pages 87-101
   * [MAD 1962] Digital Computer Laboratory der University of Illinois: *A User's Reference Manual For The Michigan Algorithm Decoder (MAD) For The IBM 7090*, 1962
   * [Neumann 2016] Alexander Neumann: *[Vor 60 Jahren: IBM veröffentlicht erste Sprachspezifikation für Fortran](https://www.heise.de/developer/meldung/Vor-60-Jahren-IBM-veroeffentlicht-erste-Sprachspezifikation-fuer-Fortran-3351318.html)*, heise Developer vom 17. Oktober 2016
   * [Nilson 2010] Nils J. Nilson: *The Quest for Artificial Intelligence. A History of Ideas and Achievements*, New York (Cambridge University Press) 2010
   * [Perlis 1960] A.J. Perlis, Charles Thornton: *Symbol Manipulation by threaded lists,*, Communications of the ACM, Volume 3, Issue 4, April 1960
+  * [Siefkes 1999] Dirk Siefkes et al. (Hrsg.): *Pioniere der Informatik. Ihre Lebensgeschichte im Interview*, Berlin und Heidelberg (Springer) 1999
   * [Smith 1967] Douglas K. Smith: *An Introduction to the List-Processing Language SLIP*, in Saul Rosen (ed.) Programming Systems and Languages, New York (McGraw-Hill) 1967, p. 393-418
   * [Weizenbaum 1962] Joseph Weizenbaum et. al.: *Knotted List Structures*, Sunnyvale, Ca. (Computer Organization Unit – General Electric Computer Laboratory) 1962
   * [Weizenbaum 1963] Joseph Weizenbaum: *Symmetric List Processor*, Communications of the ACM, Volume 6, Number 9, September 1963, p. 524-536
