@@ -187,7 +187,13 @@ Seit 1958 wurde LISP von *John McCarthy* am MIT entwickelt und von einer Gruppe 
 
 Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art *Cultural Clash* zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld, denn alle Beteiligten waren ungefähr im gleichen Alter).
 
-Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Dies ist aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument.
+Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Er schreibt und zwar noch vor dem Kapitel über »zwanghafte Programmierer«[^macht]:
+
+[^macht]: [Weizenbaum 1980], Seite 144
+
+>Damit niemand auf den Gedanken kommt, es handle sich hier »nur« um eine philosophische Frage ohne nennenswerte, praktische Konsequenz, möchte ich sofort darauf verweisen, daß nicht nur die Mehrzahl der heutigen Programmierer die von ihnen verwendeten Sprachen fast buchstäblich als ihre Maschinen betrachten, sondern daß viele von ihnen, wenn nicht die meisten, über keinerlei Wissen über die Maschinensprache ihrer Computer oder über den Inhalt und die Struktur der Übersetzer verfügen, die zwischen ihnen und ihrem Computer das Medium bilden. Das soll keine Kritik sein. […] Aber die Beobachtung führt uns zu einer wichtigen Frage: […] Wie können dann solche Programmierer überhaupt einen Sinn für die Macht des Computers entwickeln?
+
+Abseits dieser Frage ist dies auch aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument: Wenn ein Programmierer nicht mehr weiß, daß zum Beispiel FORTRAN Matrizen (Arrays) intern spaltenweise, C dagegen reihenweise abspeichert, kann bei der Formulierung seines Algorithmusses unter Umständen schwere Fehler (zum Beispiel Rundungs- und Abschneidefehler) produzieren, obwohl der Algorithmus formal korrekt formuliert wurde.
 
 Außerdem erzählte *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft[^arpa]. Zu seiner antimilitaristischen Einstellung sagte Weizenbaum[^sief]:
 
