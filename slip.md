@@ -30,7 +30,7 @@ MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtsspra
 
 [^2]: https://de.wikipedia.org/wiki/Compatible_Time-Sharing_System
 
-MAD konnte -- im Gegensatz zu FORTRAN, das bis heute nur im Batch-Betrieb (Stapelverarbeitung) läuft -- die Fähigkeiten des CTSS nutzen. Ein Programm wie ELIZA machte natürlich nur unter einem Timesharing-Betriebssystem Sinn und so ist es folgerichtig, daß Weizenbaum seinen Sprachaufsatz nach MAD übertragen hatte.
+MAD konnte -- im Gegensatz zu dem damals schon etwa 10 Jahre altem FORTRAN, das bis heute immer noch hauptsächlich im Batch-Betrieb (Stapelverarbeitung) läuft -- die Fähigkeiten des CTSS nutzen. Ein Programm wie ELIZA machte natürlich nur unter einem Timesharing-Betriebssystem Sinn und so ist es folgerichtig, daß Weizenbaum seinen Sprachaufsatz nach MAD übertragen hatte.
 
 ![MAD is not Alfred](images/mad.jpg)
 
@@ -211,7 +211,7 @@ Auf dem einen Stuhl saßen mit FORTRAN und ALGOL (und vorrübergehend auch MAD) 
 
 Auf dem zweiten Stuhl hockte LISP, die (neue) Sprache der KI, die weniger auf Mainframes, sondern mehr auf Workstations und MDT-Rechnern[^MDT] (und später auch auf Personalcomputern) das Forschungsfeld der Künstlichen Intelligenz dominierte.
 
-Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie *Nathan Ensmenger* feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten, ALGOL in den USA (im Gegensatz zu Europa) eher als intelektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen[^ens2].
+Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie *Nathan Ensmenger* feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten -- ALGOL in den USA (im Gegensatz zu Europa) eher als intelektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen[^ens2].
 
 [^ens2]: [Ensmenger 2010], Seite 104
 
