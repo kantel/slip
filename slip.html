@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Jörg Kantel">
   <title>SLIP – eine Sprache zwischen den Stühlen</title>
   <style type="text/css">code{white-space: pre;}</style>
   <!--[if lt IE 9]>
@@ -15,57 +16,48 @@
 <body>
 <header>
 <h1 class="title">SLIP – eine Sprache zwischen den Stühlen</h1>
+<h2 class="author">Jörg Kantel</h2>
 </header>
 <h2 id="einleitung">Einleitung</h2>
-<p>Joseph Weizenbaums legendäres Computerprogramm ELIZA wurde vor 50 Jahren – laut der Wikipedia – im MAD-SLIP geschrieben. Es gilt heute als der Vorläufer der Chatbots. Anläßlich dieses runden Jubiläums wurde am 2. Oktober 2016 im Rahmen des <em>Vintage Computing Festivals Berlin</em> (VCFB) eine Kurztagung unter den Titel »Hello, I’m ELIZA« durchgeführt.</p>
-<p>Ich hatte die Ehre, unter dem Titel »SLIP – eine Sprache zwischen den Stühlen« etwas zur konkreten Implementierung dieses Programms zu erzählen. Nun will ich diesen Vortrag in einen Artikel für den Tagungsband verwandeln. Und dieses Projekt ist gleichzeitig mein Testballon mit Tufte CSS und Tufte LaTeX.</p>
+<p>Das legendäre Computerprogramm ELIZA wurde vor 50 Jahren von <em>Joseph Weizenbaum</em> geschrieben. Es gilt heute als der Vorläufer der Chatbots. Anläßlich dieses runden Jubiläums wurde am 2. Oktober 2016 im Rahmen des <em>Vintage Computing Festivals Berlin</em> (VCFB) eine Kurztagung unter den Titel »Hello, I’m ELIZA« durchgeführt.</p>
+<p>Dieser Beitrag ist die Ausarbeitung eines Vortrages, den ich anläßlich dieser Kurztagung gehalten hatte.</p>
 <figure>
 <img src="images/madslip-b.jpg" alt="Was Google unter MAD-SLIP so alles findet" /><figcaption>Was Google unter MAD-SLIP so alles findet</figcaption>
 </figure>
+<p>Obiger Screenshot zeigt übrigens, was dabei herauskommt, wenn man nach MAD-SLIP googelt.</p>
 <h2 id="was-ist-slip">Was ist SLIP?</h2>
-<p>Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrieben, laut Wikipedia in MAD-SLIP. Die Sprache SLIP wurde von Weizenbaum selber entwickelt.</p>
-<ul>
-<li>SLIP: <strong>S</strong>ymmetric <strong>LI</strong>st <strong>P</strong>rocessor</li>
-<li>SLIP ist eine Sammlung von Routinen für Listen, die in eine höhere Programmiersprache (Wirtssprache) eingebettet werden können.</li>
-<li>SLIPs Kernroutinen wurden in Assembler geschrieben, die anderen in der Wirtssprache implementiert.</li>
-</ul>
-<p>Es gab drei Versionen von SLIP:</p>
-<ul>
-<li>FORTRAN-SLIP (eingebettet in FORTRAN IV, 1963)</li>
-<li>MAD-SLIP (eingebettet in MAD – Michigan Algorithm Decoder)</li>
-<li>ALGOL-SLIP (eingebettet in ALGOL 60)</li>
-</ul>
-<p>Das Einbetten von SLIP in eine andere Programmiersprache, hatte den Vorteil, daß der Programmierer keine neue Sprache lernen mußte, sondern nur die Routinen zur Listenverarbeitung.</p>
+<p>Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrieben, genauer in MAD-SLIP <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Die Sprache SLIP wurde von Weizenbaum selber entwickelt. Der Name SLIP steht für <strong>S</strong>ymmetric <strong>LI</strong>st <strong>P</strong>rocessor -- ob es tatsächlich auch als Anagramm für LISP gedacht war (meine erste Vermutung), ist mir nicht belegbar. SLIP ist weniger eine eigene Sprache als eine Sammlung von Routinen für Listen, die in eine höhere Programmiersprache (Wirtssprache) eingebettet werden können. SLIPs Kernroutinen wurden in Assembler der IBM 7094 geschrieben, die meisten Routinen jedoch in der Wirtssprache implementiert.</p>
+<p>Es gab drei Versionen von SLIP, zuerst das 1963 entwickelte FORTRAN-SLIP (eingebettet in FORTRAN IV), danach das vor 1966 in MAD implementierte MAD-SLIP, die Version, in der Weizenbaum ELIZA schrieb und schließlich das um 1968/1969 entstandene ALGOL-SLIP, dessen Wirtssprache ALGOL 60 war.</p>
+<p>Dieser Beitrag beschäftigt sich vornehmlich mit MAD-SLIP, wegen der dünnen Quellenlage wurde aber auch auf Veröffentlichungen zu den anderen SLIP-Dialekten zurückgegriffen. Es ist anzunehmen, daß die Unterschiede zwischen diesen Dialekten nicht allzu signifikant waren.</p>
+<p>Das Einbetten von SLIP in eine andere Programmiersprache hatte den Vorteil, daß der Programmierer, der mit der Wirtssprache vertraut war, keine neue Sprache lernen mußte, sondern nur die neu hinzugekommenen Routinen zur Listenverarbeitung.</p>
+<h3 id="die-entwicklung-von-mad-und-mad--slip">Die Entwicklung von MAD und (MAD-) SLIP</h3>
+<p>MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache <strong>MAD</strong> (<strong>M</strong>ichigan <strong>A</strong>lgorithm <strong>D</strong>ecoder) war eine von ALGOL 58 beeinflußte Sprache, die unter anderem auf den IBM Mainframes der 7000er Serie lief. Am MIT wurde anfang der 1960-Jahre das Timesharing-Betriebssystem CTSS<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (Compatible Time-Sharing System) entwickelt. Es lief auf einer modifizierten IBM 7094 und wurde bis 1973 genutzt. Das »Compatible« im Namen bezog sich auf die Möglichkeit, eine unveränderte Kopie des <em>Fortran Monitor Systems</em> (FMS) im Hintergrund auszuführen. Dadurch war es möglich, die unter einem Stapelverarbeitungs-Betriebssystem entwickelten Programme auch unter dem Time-Sharing-Betriebssystem weiter zu nutzen.</p>
+<p>MAD konnte -- im Gegensatz zu dem damals schon etwa 10 Jahre altem FORTRAN, das bis heute immer noch hauptsächlich im Batch-Betrieb (Stapelverarbeitung) läuft -- die Fähigkeiten des CTSS nutzen. Ein Programm wie ELIZA machte natürlich nur unter einem Timesharing-Betriebssystem Sinn und so ist es folgerichtig, daß Weizenbaum seinen Sprachaufsatz nach MAD übertragen hatte.</p>
 <figure>
 <img src="images/mad.jpg" alt="MAD is not Alfred" /><figcaption>MAD is not Alfred</figcaption>
 </figure>
-<p>MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache <strong>MAD</strong> ()<strong>M</strong>ichigan <strong>A</strong>lgorithm <strong>D</strong>ecoder) war eine von ALGOL beeinflußte Sprache, die unter anderem auf den IBM 7094 Mainframes mit dem Timesharing-Betriebssystem CTSS lief. CTSS wurde Anfang der 1960er-Jahre am MIT entwickelt und bis 1973 genutzt.</p>
-<p>Weizenbaum nennt vier frühere List-Prozessoren, die SLIP beeinflußt haben:</p>
-<p><strong>IPL-V (Information Processing Language)</strong> ist eine Computersprache, die 1956 von <em>Allen Newell</em>, <em>Cliff Shaw</em> und <em>Herbert A. Simon</em> bei der RAND Corporation und dem Carnegie Institute of Technology entwickelt wurde. Bis sich LISP durchsetzte, war IPL lange Jahre die Sprache der KI-Forschung, in der zum Beispiel die Programme Logic Theorist (1956), General Problem Solver (GPS, 1957) und das Computer-Schachprogramm NSS implementiert wurden.</p>
-<p><strong>FLPL</strong> steht für FORTRAN List Processing Language und wurde bei IBM 1958 für die IBM 704 entwickelt, um damit KI-Programme zu entwickeln (speziell einen Therom-Prüfer für Geometrie nach einer Idee von Marvin Minsky).</p>
-<p><strong>The Threaded List Language</strong> wurde 1960 von <em>A.J. Perlis</em> und <em>Charles Thornton</em> auf einem »650 Computer System« am Carnegie Institute of Technology in Pittsburgh in Assembler (TASS) implementiert.</p>
-<p><strong>Knotted Lists Structures</strong> (KLS) – von Weizenbaum selber geschrieben, ist der direkte Vorgänger von SLIP.</p>
-<p>SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.</p>
+<p>Eine Besonderheit von MAD war, daß in einer frühen Version bei einer größeren Anzahl von Programmierfehlern der Compiler eine ganzseitige Fehlermeldung<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> mit dem Portrait Alfred E. Neumanns ausgab<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>, dem Maskottchen der damals schon beliebten Comic- und Satirezeitschrift <em>Mad</em>. Dieses Feature wurde aber nicht in die finale Version übernommen.</p>
+<p>SLIP war ursprünglich am <em>Computer Development Laboratory</em> der <em>General Electric Corporation</em> für numerische Aufgaben entwickelt worden, Weizenbaum selber<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> nennt vier frühere List-Prozessoren, die SLIP beeinflußt hatten:</p>
+<p><strong>IPL-V (Information Processing Language)</strong> ist eine Computersprache, die 1956 von <em>Allen Newell</em>, <em>Cliff Shaw</em> und <em>Herbert A. Simon</em> bei der <em>RAND Corporatio</em>n und dem <em>Carnegie Institute of Technology</em> entwickelt wurde. Bis sich LISP durchsetzte, war IPL lange Jahre die Sprache der KI-Forschung<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>, in der zum Beispiel die Programme <em>Logic Theorist</em> (1956), <em>General Problem Solver</em> (GPS, 1957) und das Computer-Schachprogramm <em>NSS</em> implementiert wurden.</p>
+<p>Eines der ersten Projekte mit IPL war der Versuch eines automatisierten, computergestützen Beweises der Theoreme der <em>Principia Mathematica</em> von * Bertrand Russell* und <em>Alfred North Whitehead</em>. IPL-V wurde dann aber sehr schnell von LISP abgelöst, da LISP die einfachere Syntax und vor allem eine automatische <em>Garbage Collection</em> besaß.</p>
+<p><strong>FLPL</strong> steht für <strong>FORTRAN List Processing Language</strong><a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a> und wurde bei IBM 1958 für die IBM 704 entwickelt, um damit KI-Programme zu entwickeln (speziell einen Therom-Prüfer für Geometrie nach einer Idee von <em>Marvin Minsky</em>).</p>
+<p><strong>The Threaded List Language</strong><a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a> wurde 1960 von <em>A.J. Perlis</em> und <em>Charles Thornton</em> auf einem »650 Computer System« am Carnegie Institute of Technology in Pittsburgh in Assembler (TASS) implementiert.</p>
+<p><strong>Knotted Lists Structures</strong> (KLS) – von Weizenbaum selber geschrieben<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a>, ist der direkte Vorgänger von SLIP.</p>
 <h3 id="exkurs-lisp">Exkurs: LISP</h3>
-<p><strong>LISP</strong> (<strong>LIS</strong>t <strong>P</strong>rocessing) entstand 1958/1959 am MIT und gehört bis heute zu den wichtigsten Programmiersprachen der Künstlichen Intelligenz (KI).</p>
-<h2 id="die-hardware-ibm-7094">Die Hardware: IBM 7094</h2>
-<p>SLIP lief auf einer (damals brandneuen – 1962) IBM 7094, dem Nachfolgemodell der IBM 7090. Die IBM 7090 war der erste Transistor-Großrechner für den wissenschaftlichen Bereich, den IBM herstelte, das Vorgängermodelle (IBM 704-Serie) wurden noch mit Röhren betrieben.</p>
+<p><strong>LISP</strong> (<strong>LIS</strong>t <strong>P</strong>rocessing) entstand 1958/1959 am MIT und gehört bis heute zu den wichtigsten Programmiersprachen der Künstlichen Intelligenz (KI). LISP ist nach FORTRAN die zweitälteste Programmiersrpache, die heute noch verbreitet ist. LISP wurde entweder interpretiert oder (in späteren Versionen) von einem Compiler zur schnelleren Verarbeitung in eine Maschinensprache übersetzt. In den 1970er und 1980er Jahren gab es auch spezielle LISP-Maschinen, die trotz Typ-Überprüfung und <em>Garbage Collection</em> LISP-Programme schneller ausführen konnten als die anderen, damals üblichen Rechner. Warum Weizenbaum ELIZA in SLIP und nicht in LISP schrieb, versuche ich am Ende dieses Beitrages zu erläutern.</p>
+<p>Seit den 1980er Jahren wurde <em>Macintosh Common Lisp</em> (MCL) am <em>Media Lab</em> des MIT intensiv genutzt. MCL war auch an vielen anderen Forschungsinstituten der Künstlichen Intelligenz (KI) besonders in den USA sehr populär. Dennoch hat MCL nie den Sprung auf die Intel-basierten neuen Apple-Computer mit MacOS X geschafft.</p>
+<h2 id="die-hardware-ibm-70947094">Die Hardware: IBM 7094<a href="#fn10" class="footnoteRef" id="fnref10"><sup>10</sup></a></h2>
 <figure>
-<img src="images/ibm7094console.jpg" alt="Die Hardware: IBM 7094" /><figcaption>Die Hardware: IBM 7094</figcaption>
+<img src="images/ibm7094console.jpg" alt="Die Hardware: Die Konsole der IBM 7094" /><figcaption>Die Hardware: Die Konsole der IBM 7094</figcaption>
 </figure>
+<p>SLIP lief auf einer (damals brandneuen – 1962) IBM 7094, dem Nachfolgemodell der IBM 7090. Die IBM 7090 war der erste Transistor-Großrechner für den wissenschaftlichen Bereich, den IBM herstellte, das Vorgängermodelle (IBM 704-Serie) wurden noch mit Röhren betrieben.<a href="#fn11" class="footnoteRef" id="fnref11"><sup>11</sup></a></p>
 <p>Zur Größenordnung: Ein »typisches« System kostete damals etwa 2,9 Millionen US-Dollar (umgerechnet auf die heutige Kaufkraft ca. 23,5 Millionen Dollar), man konnte es aber auch für 63.500 US-Dollar/Monat mieten (umgerechnet auf heutige Kaufkraft ca. 500.000 Dollar).</p>
-<p>Die technischen Daten der IBM 7094</p>
-<ul>
-<li>Die Rechner der 7000er-Serie – wie schon die Vorgängermodelle – besaßen eine Wortlänge von 36 Bit</li>
-<li>Das Befehlsformat hatte einen 3 Bit-Prefix, ein 15 Bit Decrement und eine 15-Bit Adresse</li>
-<li>Fixpoint Zahlen wurden binär mit einem Bit für das Vorzeichen direkt gespeichert</li>
-<li>Einfache Fließkommazahlen wurden mit einem 8-Bit Exponenten und einer 27-Bit-Mantisse dargestellt</li>
-<li>Double-Float (neu in der IBM 7094) hatten ebenfalls einen 8-Bit Exponenten und eine 54-Bit-Mantisse</li>
-<li>Alphanumerische Werte wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort</li>
-</ul>
-<h2 id="joseph-weizenbaum">Joseph Weizenbaum</h2>
-<p>Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im Computer Development Laboratory der General Electric Corporation, dort wurde SLIP entwickelt, 1963 ging er zum <em>Massachusetts Institute of Technology</em> (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA</p>
-<h2 id="slip">SLIP</h2>
+<h3 id="die-technischen-daten-der-ibm-7094">Die technischen Daten der IBM 7094</h3>
+<p>Die Rechner der 7000er-Serie – wie schon die Vorgängermodelle – besaßen eine Wortlänge von 36 Bit. Das Befehlsformat hatte einen 3 Bit-Prefix, ein 15 Bit Decrement und eine 15-Bit Adresse.</p>
+<p>Fixpoint Zahlen wurden binär mit einem Bit für das Vorzeichen direkt gespeichert, einfache Fließkommazahlen wurden mit einem 8-Bit Exponenten und einer 27-Bit-Mantisse dargestellt. Double-Float (neu eingeführt mit der IBM 7094) hatten ebenfalls einen 8-Bit Exponenten und eine 54-Bit-Mantisse.</p>
+<p>Alphanumerische Werte (das was man heute mit <code>Strings</code> bezeichnet) wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort.</p>
+<h2 id="slips-spracheigenschaften">SLIPs Spracheigenschaften</h2>
+<p>Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im <em>Computer Development Laboratory</em> der <em>General Electric Corporation</em>, wo er FORTRAN-SLIP auf einer IBM 7094 entwickelte, 1963 ging er zum <em>Massachusetts Institute of Technology</em> (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA, davor hatte er SLIP auf einer mit CTSS modifizierten IBM 7094 in MAD implementiert. Zwischen 1968 und 1969 hatte er dann ncoh am MIT SLIP noch einmal nach Algol 68 übertragen. Danach verschwindet SLIP im Dunkel der frühen Informatikgeschichte.</p>
 <p>SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.</p>
 <p>Ein <strong>SLIP-Listenelement</strong> bestand aus einem Wort-Paar, bestehend aus zwei aufeinanderfolgenden Speichereinheiten (Wörtern): Das erste Wort enthielt ein ID-Feld, ein LINKL- (link left) und ein LINKR- (link right) Feld:</p>
 <figure>
@@ -93,64 +85,98 @@
 <li>Jede Liste konnte auch eine Subliste sein.</li>
 </ul>
 <h3 id="slip-programmstruktur">SLIP-Programmstruktur</h3>
-<p>SLIP besaß in der Originalversion 99 Befehle, davon waren knapp 20 in Assembler programmiert, die anderen als FORTRAN-Funktionen implementiert.</p>
-<p>Nicht alle Befehle waren für den Anwendungsprogrammierer, einige waren auch für die Programmierung von SLIP notwendig</p>
-<p>Die Zahl der Befehle reduziert sich auch noch einmal, wenn man berücksichtigt, daß wegen der Symmetrie alle Listenbefehle doppelt vorhanden waren.</p>
+<p>SLIP besaß in der Originalversion 99 Befehle, davon waren knapp 20 in Assembler programmiert, die anderen als FORTRAN-Funktionen implementiert. Nicht alle Befehle waren für den Anwendungsprogrammierer gedacht, einige waren auch für die Programmierung von SLIP selber notwendig und wurden nur intern genutzt.</p>
+<p>Die Zahl der von einem Programmierer neu zu erlernden Befehle reduzierte sich noch einmal, wenn man berücksichtigt, daß wegen der Symmetrie alle Listenbefehle doppelt vorhanden waren.</p>
 <p>Naturgemäß besaß SLIP sehr viele Befehle, die für die dynamische Generierung von Listen, dem Hinzufügen und Entfernen von Zellen und dem Zugriff auf die einzelnen Zellen benötigt wurden.</p>
 <h3 id="sequenzer-und-reader">»Sequenzer« und »Reader«</h3>
 <p>Ein Sequencer ist ein Mechanismus, der eine Operation auf alle Zellen einer Liste nacheinander ausführt. Auch hier ist SLIP symmetrisch. Der Programmierer konnte festlegen, ob die Sequenz von unten nach oben oder von oben nach unten durchgeführt werden soll.</p>
 <figure>
 <img src="images/reader.png" alt="Eine SLIP Reader-Zelle" /><figcaption>Eine SLIP Reader-Zelle</figcaption>
 </figure>
-<p>Ein <em>Sequencer</em> konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein <em>Reader</em> implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS holte. Dabei ist <code>LPNTR</code> die Adresse der aktuellen Zelle, <code>LOFRDR</code> ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, <code>LCNTR</code> ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und link zeigt auf den nächsten Reader im Stack.</p>
-<p>Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.</p>
+<p>Ein <em>Sequencer</em> konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein <em>Reader</em> implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS holte. Dabei ist <code>LPNTR</code> die Adresse der aktuellen Zelle, <code>LOFRDR</code> ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, <code>LCNTR</code> ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und <code>link</code> zeigt auf den nächsten Reader im Stack. Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.</p>
 <h3 id="description-list">Description List</h3>
-<p>Eine <em>Description List</em> ist ein Attribut-Wert-Paar (Hash, Dictionary), bestehend aus einem Zellen-Paar, die erste Zelle enthält das Attribut, die zweite Zelle den Wert. Description Lists sind keine Sublisten, sondern gehören zu dem Listenheader, der auf sie zeigt. Als Konsequenz können Description Lists nicht mit den SLIP-Listenbefehlen manipuliert werden. Dafür besaß SLIP einen eigenen Satz von Befehlen.</p>
+<p>Eine <em>Description List</em> ist ein Attribut-Wert-Paar (Hash, Dictionary), bestehend aus einem Zellen-Paar, die erste Zelle enthält das Attribut, die zweite Zelle den Wert. <em>Description Lists</em> sind keine eigenständigen Sublisten, sondern gehören zu dem Listenheader, der auf sie zeigt. Als Konsequenz können <em>Description Lists</em> nicht mit den SLIP-Listenbefehlen manipuliert werden. Für <em>Description Lists</em> besaß SLIP einen eigenen Satz von Befehlen.</p>
 <h3 id="garbage-collection">Garbage Collection</h3>
-<p>Da SLIPs Listen dynamisch generiert wurden, waren Routinen zur Speicherbelegung und -freigabe erforderlich. Im Gegensatz zu LISP, das damals schon einen automatischen <em>Garbage Collector</em> besaß, wurde dies in SLIP teils vom Programm, teils vom Programmierer erledigt.</p>
-<p>Für die dynamische Speicherbelegung nutzte SLIP eine list of available spaces (LAVS). Genaugenommen ist dies keine SLIP-Liste, da diese nur in eine Richtung gelesen und geschrieben werden konnte.</p>
+<p>Da SLIPs Listen dynamisch generiert wurden, waren Routinen zur Speicherbelegung und -freigabe erforderlich. Im Gegensatz zu LISP, das damals schon einen automatischen <em>Garbage Collector</em> besaß, war dies in SLIP teils vom Programm, teils vom Programmierer zu erledigen.</p>
+<p>Für die dynamische Speicherbelegung nutzte SLIP eine <em>list of available spaces</em> (LAVS). Genaugenommen ist dies keine SLIP-Liste, da diese nur in eine Richtung gelesen und geschrieben werden konnte.</p>
 <p>LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr referenziert wurde.</p>
 <p>Der Programmierer konnte festlegen, ob in diesem Falle die Liste vom Programm gelöscht und der Speicherplatz freigegeben wird oder ob sie im Speicher bleibt, weil sie später noch einmal benötigt wird.</p>
+<p>Obwohl Weizenbaum erst zur ALGOL-SLIP-Version über die <em>Garbage Collection</em> von SLIP publiziert<a href="#fn12" class="footnoteRef" id="fnref12"><sup>12</sup></a> hatte, war diese teils vom Programm, teils vom Programmierer zu übernehmende Speicherbereinigung schon Teil der ersten FORTRAN-SLIP-Version<a href="#fn13" class="footnoteRef" id="fnref13"><sup>13</sup></a>. Es gab zwei Befehle für den Programmierer zur Speicherbereinigung, <code>INITAS(SPACE, N)</code>, die eine LAVS erzeugte und Speicher zur Verfügung stellte (folgerichtig mußte <code>INITAS</code> der erste Befehl eines SLIP-Programms sein, das SLIP-Listen benutzte) und <code>IRALST(L)</code>, das den Speicher der Liste <code>L</code> und eins dekrementierte. SLIP intern benutzte noch die Funktionen <code>NUCELL(DUMMY)</code> und <code>RCELL(A)</code>. Die erste Funktion überprüfte, ob die LAVS überhaupt noch Speicher zur Verfügung stellen konnte und gab -- wenn nicht -- eine Fehlermeldung aus und die zweite fügte die Listenzelle A an das Ende der LAVS (zur Erinnerung: Die LAVS konnte nur in eine Richtung gelesen und beschrieben werden).</p>
 <h3 id="rekursion">Rekursion</h3>
-<p>SLIP erlaubte Rekursionen, die auf einem Stack arbeiteten. Über die mögliche Rekursionstiefe ist mir leder nichts bekannt, aber sie kann nicht sehr groß gewesen sein.</p>
+<p>SLIP erlaubte Rekursionen, die auf einem Stack arbeiteten. Über die mögliche Rekursionstiefe ist mir leider nichts bekannt, aber sie kann nicht sehr tief gewesen sein. Das Beispiel in [Smith 1967], die klassische, rekursive Berechnung der Fakultät, enthält eine maximale Rekursionstiefe von drei<a href="#fn14" class="footnoteRef" id="fnref14"><sup>14</sup></a>. Hier fiel SLIP vermutlich weit hinter die Möglichkeiten von LISP zurück.</p>
 <h3 id="input---output">Input - Output</h3>
-<p>Für die (Nutzer-) Eingaben und die (Programm-) Ausgaben nutzte SLIP die Möglichkeiten des Wirtssystems. Ohne diese wäre ein Programm wie ELIZA auch gar nicht möglich gewesen. Zusätzlich gab es jedoch einen Satz von Befehlen, mit denen SLIP-Listen direkt von Lochkarten eingelesen und direkt auf Lochkarten geschrieben werden konnten.</p>
+<p>Für die (Nutzer-) Eingaben und die (Programm-) Ausgaben nutzte SLIP die Möglichkeiten des Wirtssystems. Ohne diese wäre ein Programm wie ELIZA auch gar nicht möglich gewesen. Zusätzlich gab es jedoch einen Satz von Befehlen, mit denen SLIP-Listen direkt von Lochkarten eingelesen oder direkt auf Lochkarten geschrieben werden konnten.</p>
 <h2 id="warum-slip">Warum SLIP?</h2>
-<ul>
-<li>SLIP war nicht für die KI-Forschung entwickelt worden, sondern als Werkzeug für numerische Berechnungen, Manipulation algebraischer Ausdrücke und Netzwerk- und Graphenanalysen.</li>
-<li>Für die Entwicklung von ELIZA war es sicher vorteilhaft, auf symmetrischen Listen operieren zu können.</li>
-<li>Weil es geht! (SLIP war ein Kind von Joseph Weizenbaum und jeder arbeitet gerne mit einem Werkzeug, das er selber erstellt hat.)</li>
-</ul>
+<p>SLIP war ursprünglich nicht für die KI-Forschung entwickelt worden, sondern als Werkzeug für numerische Berechnungen, Manipulationen algebraischer Ausdrücke und der Netzwerk- und Graphenanalyse. In der ersten (FORTRAN-) Version lief SLIP auch nur im Stapelbetrieb.</p>
+<p>Für die Entwicklung von ELIZA war es nicht nur vorteilhaft, auf symmetrischen Listen operieren zu können, sondern es spielte mit Sicherheit eine große Rolle, daß MAD-SLIP sich durch das CTSS des MIT vom Stapelbetrieb befreien und im Dialog mit dem Nutzer laufen konnte. Das war zur damaligen Zeit neu und keineswegs selbstverständlich.</p>
+<p>SLIPs Listen -- obwohl für einen anderen Zweck (Graphen) entworfen -- unterstützten Weiszenbaum natürlich bei der Entwicklung von ELIZA. Denn bis FORTRAN 77 kannte FORTRAN keinen Datentyp <code>CHARACTER</code> und schon gar keinen Datentyp <code>STRING</code>, sondern nur die typlosen <em>Hollerith Konstanten</em>, mit denen eine Textverarbeitung nur sehr schwer zu implementieren war. Die Quellen der Original-ELIZA-Implementierung sind zwar verschollen, doch aufgrund der damaligen Wortgröße und der Größe der Listenzellen von SLIP ist davon auszugehen, daß jede Zelle einen Buchstaben (<code>CHARACTER</code>) enthielt und die Listen Wörter oder Phrasen darstellten, die dann mit den SLIP-Befehlen für die damalige Zeit recht komfortabel bearbeitet werden konnten. Denn auch wenn das Zusammensetzen der Wörter und Phrasen aus einzelnen Buchstaben-Zellen aus heutiger Sicht ziemlich mühsam ist, war es im Gegensatz zu den Hollerith-Konstanten damals ein riesiger Fortschritt.</p>
+<p>Und sicher spielte das Hauptargument aller Programmierer seltsamer Dinge dabei eine Rolle: »Weil es geht!« Denn SLIP war ein Kind von Joseph Weizenbaum und welcher Vater spielt nicht gerne mit seinem Kind.</p>
 <h2 id="dynamo-eine-interessante-parallele">DYNAMO – eine interessante Parallele</h2>
-<p><strong>DYNAMO</strong> (<strong>DYNA</strong>mic <strong>MO</strong>dels) war eine Simulationssprache (mit begleitender graphischer Notation) für den Bereich System Dynamics. Die Sprache wurde 1958 unter der Leitung von Jay Wright Forrester am MIT entwickelt. Die erste Version war in Assembler für die IBM 704, 709 und 7090 entwickelt, DYNAMO II war in AED-0, einer erweiterten Version von Algol 60, geschrieben und ab 1971 waren Dynamo II/F und Dynamo 3 in Gebrauch, die in FORTRAN geschrieben waren.</p>
-<p>Dynamo wurde bis Mitte der 1980 Jahre für die Simulation dynamischer Systeme genutzt, es gab Anfang der 1980 Jahre auch eine Version für Personal Computer (micro-Dynamo).</p>
-<p>Der erste Bericht »Die Grenzen des Wachstums« an den Club of Rome beruhte auf Simulationen, die mit Dynamo durchgeführt wurden.</p>
-<p>Dynamo ist eine DSL</p>
+<p><strong>DYNAMO</strong> (<strong>DYNA</strong>mic <strong>MO</strong>dels) war eine Simulationssprache (mit begleitender graphischer Notation) für den Bereich System Dynamics. Die Sprache wurde 1958 unter der Leitung von <em>Jay Wright Forrester</em> am MIT entwickelt. Die erste Version war in Assembler für die IBM 704, 709 und 7090, DYNAMO II in AED-0, einer erweiterten Version von Algol 60, geschrieben und ab 1971 waren Dynamo II/F und Dynamo 3 in Gebrauch, die in FORTRAN implementiert worden waren.</p>
+<p>DYNAMO wurde bis Mitte der 1980 Jahre für die Simulation dynamischer Systeme genutzt, es gab Anfang der 1980 Jahre auch eine Version für Personal Computer (micro-Dynamo). Später gab es mit Stella ein graphisches Programmiersystem, daß intern wie DYNAMO rechnete und eine Implementierung in (Turbo-) Pascal und eine in Modula-2 (MacMETH an der ETH Zürich).</p>
+<p>Der erste Bericht »Die Grenzen des Wachstums« an den Club of Rome beruhte auf Simulationen, die mit DYNAMO durchgeführt worden waren.</p>
+<p>DYNAMO war im Gegensatz zu SLIP kein Sprachaufsatz, sondern eine eigenständige <em>Domain Specific Language</em> (DSL). Dennoch verleiteten mich die historischen Parallelen zwischen diesen beiden Sprachen zu meiner (falschen) Anfangshypothese, daß SLIP ebenfalls eine DSL gewesen sei.</p>
 <h2 id="und-warum-nicht-lisp">Und warum nicht LISP?</h2>
 <p>Seit 1958 wurde LISP von <em>John McCarthy</em> am MIT entwickelt und von einer Gruppe von Studenten um McCarthy und <em>Marvin Minsky</em> (seit 1959 am MIT) intensiv genutzt und ersetzte dort das bis dahin verwendete IPL. LISP wurde zuerst auf einer IBM 704 des MIT entwickelt, nachdem die Gruppe aber feststellte, daß diese nicht gegnügend Speicher für ihre Programme besaß, auf einer DEC PDP-1 implementiert. Dann folgte eine PDP-6 und eine PDP-10.</p>
 <p>1963 stieß <em>Jean Piaget</em> als Co-Direktor zu der Gruppe um Marvin Minsky, während McCarthy nach Stanford ging (wo er ebenfalls mit einer PDP-6 und später mit einer PDP-10 arbeiten konnte).</p>
-<p>Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art <em>Cultural Clash</em> zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld).</p>
-<p>Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Dies ist aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument.</p>
-<h2 id="und-so-ist-slip-die-sprache-zwischen-den-stühlen">Und so ist SLIP die Sprache zwischen den Stühlen</h2>
-<ul>
-<li>Auf dem einen Stuhl FORTRAN, ALGOL, (MAD), die Mainframe-Boliden</li>
-<li>Dazwischen (ohne Stuhl) SLIP</li>
-<li>Auf dem anderen Stuhl LISP, die (neue) Sprache der KI, die in der Regel auf Workstation und MDT-Rechnern zum Einsatz kam</li>
-</ul>
+<p>Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art <em>Cultural Clash</em> zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld, denn alle Beteiligten waren ungefähr im gleichen Alter).</p>
+<p>Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Er schreibt und zwar noch vor dem Kapitel über »zwanghafte Programmierer«<a href="#fn15" class="footnoteRef" id="fnref15"><sup>15</sup></a>:</p>
+<blockquote>
+<p>Damit niemand auf den Gedanken kommt, es handle sich hier »nur« um eine philosophische Frage ohne nennenswerte, praktische Konsequenz, möchte ich sofort darauf verweisen, daß nicht nur die Mehrzahl der heutigen Programmierer die von ihnen verwendeten Sprachen fast buchstäblich als ihre Maschinen betrachten, sondern daß viele von ihnen, wenn nicht die meisten, über keinerlei Wissen über die Maschinensprache ihrer Computer oder über den Inhalt und die Struktur der Übersetzer verfügen, die zwischen ihnen und ihrem Computer das Medium bilden. Das soll keine Kritik sein. […] Aber die Beobachtung führt uns zu einer wichtigen Frage: […] Wie können dann solche Programmierer überhaupt einen Sinn für die Macht des Computers entwickeln?</p>
+</blockquote>
+<p>Abseits dieser Frage ist dies auch aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument: Wenn ein Programmierer nicht mehr weiß, daß zum Beispiel FORTRAN Matrizen (Arrays) intern spaltenweise, C dagegen reihenweise abspeichert, kann bei der Formulierung seines Algorithmusses unter Umständen schwere Fehler (zum Beispiel Rundungs- und Abschneidefehler) produzieren, obwohl der Algorithmus formal korrekt formuliert wurde.</p>
+<p>Außerdem erzählte <em>Wolfgang Coy</em><a href="#fn16" class="footnoteRef" id="fnref16"><sup>16</sup></a> auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft<a href="#fn17" class="footnoteRef" id="fnref17"><sup>17</sup></a>. Zu seiner antimilitaristischen Einstellung sagte Weizenbaum<a href="#fn18" class="footnoteRef" id="fnref18"><sup>18</sup></a>:</p>
+<blockquote>
+<p>[…] die Rolle des MIT in der Waffentwicklung haben mein kritisches Bewußtsein geweckt. Und als ich einmal angefangen hatte, in dieser Richtung nachzudenken, konnte ich nicht mehr aufhören.</p>
+</blockquote>
+<p>Es ist möglich, daß dies zu einem Zerwürfnis zwischen Weizenbaum und der Gruppe um McCarthy führte und dies eine der Gründe für den Widerwillen Weizenbaums gegenüber LISP war.</p>
+<h2 id="und-so-blieb-slip-die-sprache-zwischen-den-stühlen">Und so blieb SLIP die Sprache zwischen den Stühlen</h2>
+<p>Auf dem einen Stuhl saßen mit FORTRAN und ALGOL (und vorrübergehend auch MAD) die Sprachen der Mainframe-Boliden, die im Falle von ALGOL bis in die 1980er Jahre und im Falle von FORTRAN sogar bis heute<a href="#fn19" class="footnoteRef" id="fnref19"><sup>19</sup></a> das Feld dominieren<a href="#fn20" class="footnoteRef" id="fnref20"><sup>20</sup></a>.</p>
+<p>Auf dem zweiten Stuhl hockte LISP, die (neue) Sprache der KI, die weniger auf Mainframes, sondern mehr auf Workstations und MDT-Rechnern<a href="#fn21" class="footnoteRef" id="fnref21"><sup>21</sup></a> (und später auch auf Personalcomputern) das Forschungsfeld der Künstlichen Intelligenz dominierte.</p>
+<p>Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie <em>Nathan Ensmenger</em> feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten -- ALGOL in den USA (im Gegensatz zu Europa) eher als intelektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen<a href="#fn22" class="footnoteRef" id="fnref22"><sup>22</sup></a>.</p>
 <h2 id="literatur">Literatur</h2>
 <ul>
-<li>Digital Computer Laboratory der University of Illinois: <em>A User's Reference Manual For The Michigan Algorithm Decoder (MAD) For The IBM 7090</em>, 1962</li>
-<li>Alexander Neumann: <em><a href="https://www.heise.de/developer/meldung/Vor-60-Jahren-IBM-veroeffentlicht-erste-Sprachspezifikation-fuer-Fortran-3351318.html">Vor 60 Jahren: IBM veröffentlicht erste Sprachspezifikation für Fortran</a></em>, heise Developer vom 17. Oktober 2016</li>
-<li>Nils J. Nilson: <em>The Quest for Artificial Intelligence. A History of Ideas and Achievements</em>, New York (Cambridge University Press) 2010</li>
-<li>A.J. Perlis, Charles Thornton: <em>Symbol Manipulation by threaded lists,</em>, Communications of the ACM, Volume 3, Issue 4, April 1960</li>
-<li>Douglas K. Smith: <em>An Introduction to the List-Processing Language SLIP</em>, in Saul Rosen (ed.) Programming Systems and Languages, New York (McGraw-Hill) 1967, p. 393-418</li>
-<li>Joseph Weizenbaum et. al.: <em>Knotted List Structures</em>, Sunnyvale, Ca. (Computer Organization Unit – General Electric Computer Laboratory) 1962</li>
-<li>Joseph Weizenbaum: <em>Symmetric List Processor</em>, Communications of the ACM, Volume 6, Number 9, September 1963, p. 524-536</li>
-<li>Joseph Weizenbaum: <em>ELIZA – A Computer Program For the Study of Natural Language Communication Between Man And Machine</em>, Communications of the ACM, Volume 9, Number 1, January 1966, p. 36-45</li>
-<li>Joseph Weizenbaum: <em>Recovery of Reentrant List Structures in SLIP</em>, Communications of the ACM, Volume 12, Number 7, July 1969, p. 370-372</li>
-<li>Joseph Weizenbaum: <em>Die Macht der Computer und die Ohnmacht der Vernunft</em>, Frankfurt/Main (Suhrkamp), 2. Auflage 1980</li>
-<li>Richard L. Wexelblat (ed.): <em>History of Programming Languages</em>, New York (Academic Press) 1981</li>
+<li>[Ensmenger 2010] Nathan Ensmenger: <em>The Computer Boys Take Over. Computers, Programmers, and the Politics of Technical Expertise</em>, Cambridge, MA (MIT Press) 2010</li>
+<li>[Gelernter 1960] H. Gelernter, J. R. Hansen, C. L. Gerberich: <em>A Fortran-Compiled List-Processing Language</em>, Journal of the ACM, Volume 7 Issue 2, April 1960, Pages 87-101</li>
+<li>[MAD 1962] Digital Computer Laboratory der University of Illinois: <em>A User's Reference Manual For The Michigan Algorithm Decoder (MAD) For The IBM 7090</em>, 1962</li>
+<li>[Neumann 2016] Alexander Neumann: <em><a href="https://www.heise.de/developer/meldung/Vor-60-Jahren-IBM-veroeffentlicht-erste-Sprachspezifikation-fuer-Fortran-3351318.html">Vor 60 Jahren: IBM veröffentlicht erste Sprachspezifikation für Fortran</a></em>, heise Developer vom 17. Oktober 2016</li>
+<li>[Nilson 2010] Nils J. Nilson: <em>The Quest for Artificial Intelligence. A History of Ideas and Achievements</em>, New York (Cambridge University Press) 2010</li>
+<li>[Perlis 1960] A.J. Perlis, Charles Thornton: <em>Symbol Manipulation by threaded lists,</em>, Communications of the ACM, Volume 3, Issue 4, April 1960</li>
+<li>[Siefkes 1999] Dirk Siefkes et al. (Hrsg.): <em>Pioniere der Informatik. Ihre Lebensgeschichte im Interview</em>, Berlin und Heidelberg (Springer) 1999</li>
+<li>[Smith 1967] Douglas K. Smith: <em>An Introduction to the List-Processing Language SLIP</em>, in Saul Rosen (ed.) Programming Systems and Languages, New York (McGraw-Hill) 1967, p. 393-418</li>
+<li>[Weizenbaum 1962] Joseph Weizenbaum et. al.: <em>Knotted List Structures</em>, Sunnyvale, Ca. (Computer Organization Unit – General Electric Computer Laboratory) 1962</li>
+<li>[Weizenbaum 1963] Joseph Weizenbaum: <em>Symmetric List Processor</em>, Communications of the ACM, Volume 6, Number 9, September 1963, p. 524-536</li>
+<li>[Weizenbaum 1966] Joseph Weizenbaum: <em>ELIZA – A Computer Program For the Study of Natural Language Communication Between Man And Machine</em>, Communications of the ACM, Volume 9, Number 1, January 1966, p. 36-45</li>
+<li>[Weizenbaum 1969] Joseph Weizenbaum: <em>Recovery of Reentrant List Structures in SLIP</em>, Communications of the ACM, Volume 12, Number 7, July 1969, p. 370-372</li>
+<li>[Weizenbaum 1980] Joseph Weizenbaum: <em>Die Macht der Computer und die Ohnmacht der Vernunft</em>, Frankfurt/Main (Suhrkamp), 2. Auflage 1980</li>
+<li>[Wexelblat 1981] Richard L. Wexelblat (ed.): <em>History of Programming Languages</em>, New York (Academic Press) 1981</li>
 </ul>
-<h2 id="bildnachweise">Bildnachweise</h2>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>[Weizenbaum 1966], Seite 36<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>https://de.wikipedia.org/wiki/Compatible_Time-Sharing_System<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Bildquelle (PD) Wikimedia Commons: https://en.wikipedia.org/wiki/MAD_(programming_language)#/media/File:MAD-alfie-1960.jpg<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>https://en.wikipedia.org/wiki/MAD_(programming_language)<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>[Weizenbaum 1963], S.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>Vgl. [Nilson 2010]<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Vgl. [Gelernter 1962]<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>Vlg. [Perlis 1960]<a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>Vgl. [Weizenbaum 1962]<a href="#fnref9">↩</a></p></li>
+<li id="fn10"><p>Bildquelle (CC BY-SA 3.0): Wikimedia Commons – https://en.wikipedia.org/wiki/IBM_7090#/media/File:IBM_7094_console2.agr.JPG<a href="#fnref10">↩</a></p></li>
+<li id="fn11"><p>https://en.wikipedia.org/wiki/IBM_7090<a href="#fnref11">↩</a></p></li>
+<li id="fn12"><p>Vgl. [Weizenbaum 1969]<a href="#fnref12">↩</a></p></li>
+<li id="fn13"><p>Vgl. [Smith 1967], Seite 397-399<a href="#fnref13">↩</a></p></li>
+<li id="fn14"><p>Vgl. [Smith 1967], Seite 407-408<a href="#fnref14">↩</a></p></li>
+<li id="fn15"><p>[Weizenbaum 1980], Seite 144<a href="#fnref15">↩</a></p></li>
+<li id="fn16"><p>Vgl. seinen Beitrag in diesem Band<a href="#fnref16">↩</a></p></li>
+<li id="fn17"><p>Über die Unterstützung der Gruppe um Minsky und MacCarthy durch das amerikanische Verteidigungsministerium via ARPA vgl. [Nilson 2010], Seiten 118ff.<a href="#fnref17">↩</a></p></li>
+<li id="fn18"><p>[Siefkes 1999], Seite 46<a href="#fnref18">↩</a></p></li>
+<li id="fn19"><p>Vgl. [Neumann 2016]<a href="#fnref19">↩</a></p></li>
+<li id="fn20"><p>Zur Frühgeschichte4 von FORTRAN vgl. auch [Ensmenger 1999], Seiten 90-93<a href="#fnref20">↩</a></p></li>
+<li id="fn21"><p>MDT: <strong>M</strong>ittlere <strong>D</strong>aten<strong>T</strong>echnik<a href="#fnref21">↩</a></p></li>
+<li id="fn22"><p>[Ensmenger 2010], Seite 104<a href="#fnref22">↩</a></p></li>
+</ol>
+</section>
 </body>
 </html>

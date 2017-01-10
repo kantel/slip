@@ -14,7 +14,7 @@ Obiger Screenshot zeigt übrigens, was dabei herauskommt, wenn man nach MAD-SLIP
 
 ## Was ist SLIP?
 
-Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrieben, genauer in MAD-SLIP [^1]. Die Sprache SLIP wurde von Weizenbaum selber entwickelt. Der Name SLIP steht für **S**ymmetric **LI**st **P**rocessor -- ob es tatsächlich auch als Anagramm für LISP gedacht war (meine erste Vermutung), ist mir nicht belegbar. SLIP ist weniger eine eigene Sprache als eine Sammlung von Routinen für Listen, die in eine höhere Programmiersprache (Wirtssprache) eingebettet werden können. SLIPs Kernroutinen wurden in Assembler der IBM 7094 geschrieben, die meisten Routinen jedoch in der Wirtssprache implementiert.
+Das Programm ELIZA wurde 1966 von Joseph Weizenbaum in der Sprache SLIP geschrieben, genauer in MAD-SLIP[^1]. Die Sprache SLIP wurde von Weizenbaum selber entwickelt. Der Name SLIP steht für **S**ymmetric **LI**st **P**rocessor -- ob es tatsächlich auch als Anagramm für LISP gedacht war (meine erste Vermutung), ist mir nicht belegbar. SLIP ist weniger eine eigene Sprache als eine Sammlung von Routinen für Listen, die in eine höhere Programmiersprache (Wirtssprache) eingebettet werden können. SLIPs Kernroutinen wurden in Assembler der IBM 7094 geschrieben, die meisten Routinen jedoch in der Wirtssprache implementiert.
   
 [^1]: [Weizenbaum 1966], Seite 36
 
@@ -26,22 +26,22 @@ Das Einbetten von SLIP in eine andere Programmiersprache hatte den Vorteil, daß
 
 ### Die Entwicklung von MAD und (MAD-) SLIP
 
-MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache **MAD** (**M**ichigan **A**lgorithm **D**ecoder) war eine von ALGOL 58 beeinflußte Sprache, die unter anderem auf den IBM Mainframes der 7000er Serie lief. Am MIT wurde anfang der 1960-Jahre das Timesharing-Betriebssystem CTSS[^2] (Compatible Time-Sharing System) entwickelt. Es lief auf einer modifizierten IBM 7094 und wurde bis 1973 genutzt. Das »Compatible« im Namen bezog sich auf die Möglichkeit, eine unveränderte Kopie des *Fortran Monitor Systems* (FMS) im Hintergrund auszuführen. Dadurch war es möglich, die unter einem Stapelverarbeitungs-Betriebssystem entwickelten Programme auch unter dem Time-Sharing-Betriebssystem weiter zu nutzen.
+MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache **MAD**[^mad] (**M**ichigan **A**lgorithm **D**ecoder) war eine von ALGOL 58 beeinflußte Sprache, die unter anderem auf den IBM Mainframes der 7000er Serie lief. Am MIT wurde anfang der 1960-Jahre das Timesharing-Betriebssystem CTSS[^2] (Compatible Time-Sharing System) entwickelt. Es lief auf einer modifizierten IBM 7094 und wurde bis 1973 genutzt. Das »Compatible« im Namen bezog sich auf die Möglichkeit, eine unveränderte Kopie des *Fortran Monitor Systems* (FMS) im Hintergrund auszuführen. Dadurch war es möglich, die unter einem Stapelverarbeitungs-Betriebssystem entwickelten Programme auch unter dem Time-Sharing-Betriebssystem weiter zu nutzen.
 
 [^2]: https://de.wikipedia.org/wiki/Compatible_Time-Sharing_System
 
-MAD konnte -- im Gegensatz zu dem damals schon etwa 10 Jahre altem FORTRAN, das bis heute immer noch hauptsächlich im Batch-Betrieb (Stapelverarbeitung) läuft -- die Fähigkeiten des CTSS nutzen. Ein Programm wie ELIZA machte natürlich nur unter einem Timesharing-Betriebssystem Sinn und so ist es folgerichtig, daß Weizenbaum seinen Sprachaufsatz nach MAD übertragen hatte.
-
 ![MAD is not Alfred](images/mad.jpg)
 
-Eine Besonderheit von MAD war, daß in einer frühen Version bei einer größeren Anzahl von Programmierfehlern der Compiler eine ganzseitige Fehlermeldung[^alfred] mit dem Portrait Alfred E. Neumanns ausgab[^mad], dem Maskottchen der damals schon beliebten Comic- und Satirezeitschrift *Mad*. Dieses Feature wurde aber nicht in die finale Version übernommen.
+MAD konnte -- im Gegensatz zu dem damals schon etwa 10 Jahre altem FORTRAN, das bis heute immer noch hauptsächlich im Batch-Betrieb (Stapelverarbeitung) läuft -- die Fähigkeiten des CTSS nutzen. Ein Programm wie ELIZA machte natürlich nur unter einem Timesharing-Betriebssystem Sinn und so ist es folgerichtig, daß Weizenbaum seinen Sprachaufsatz nach MAD übertragen hatte.
+
+Eine Besonderheit von MAD war, daß in einer frühen Version bei einer größeren Anzahl von Programmierfehlern der Compiler eine ganzseitige Fehlermeldung[^alfred] mit dem Portrait Alfred E. Neumanns ausgab, dem Maskottchen der damals schon beliebten Comic- und Satirezeitschrift *Mad*. Dieses Feature wurde aber nicht in die finale Version übernommen.
 
 [^alfred]: Bildquelle (PD) Wikimedia Commons: https://en.wikipedia.org/wiki/MAD_(programming_language)#/media/File:MAD-alfie-1960.jpg
 [^mad]: https://en.wikipedia.org/wiki/MAD_(programming_language)
 
 SLIP war ursprünglich am *Computer Development Laboratory* der *General Electric Corporation* für numerische Aufgaben entwickelt worden, Weizenbaum selber[^w1963] nennt vier frühere List-Prozessoren, die SLIP beeinflußt hatten:
 
-[^w1963]: [Weizenbaum 1963], S.
+[^w1963]: [Weizenbaum 1963], S. 524
 
 **IPL-V (Information Processing Language)** ist eine Computersprache, die 1956 von *Allen Newell*, *Cliff Shaw* und *Herbert A. Simon* bei der *RAND Corporatio*n und dem *Carnegie Institute of Technology* entwickelt wurde. Bis sich LISP durchsetzte, war IPL lange Jahre die Sprache der KI-Forschung[^3], in der zum Beispiel die Programme *Logic Theorist* (1956), *General Problem Solver* (GPS, 1957) und das Computer-Schachprogramm *NSS* implementiert wurden.
 
@@ -69,12 +69,12 @@ Seit den 1980er Jahren wurde *Macintosh Common Lisp* (MCL) am *Media Lab* des MI
 
 ## Die Hardware: IBM 7094[^7094]
 
-![Die Hardware: Die Konsole der IBM 7094](images/ibm7094console.jpg)
-
-SLIP lief auf einer (damals brandneuen – 1962) IBM 7094, dem Nachfolgemodell der IBM 7090. Die IBM 7090 war der erste Transistor-Großrechner für den wissenschaftlichen Bereich, den IBM herstellte, das Vorgängermodelle (IBM 704-Serie) wurden noch mit Röhren betrieben.[^70942]
+SLIP lief auf einer (damals brandneuen – 1962) IBM 7094, dem Nachfolgemodell der IBM 7090. Die IBM 7090 war der erste Transistor-Großrechner für den wissenschaftlichen Bereich, den IBM herstellte, das Vorgängermodelle (IBM 704-Serie) wurden noch mit Röhren betrieben[^70942].
 
 [^7094]: Bildquelle (CC BY-SA 3.0): Wikimedia Commons – https://en.wikipedia.org/wiki/IBM_7090#/media/File:IBM_7094_console2.agr.JPG
 [^70942]: https://en.wikipedia.org/wiki/IBM_7090
+
+![Die Hardware: Die Konsole der IBM 7094](images/ibm7094console.jpg)
 
 Zur Größenordnung: Ein »typisches« System kostete damals etwa 2,9 Millionen US-Dollar (umgerechnet auf die heutige Kaufkraft ca. 23,5 Millionen Dollar), man konnte es aber auch für 63.500 US-Dollar/Monat mieten (umgerechnet auf heutige Kaufkraft ca. 500.000 Dollar).
 
@@ -84,11 +84,11 @@ Die Rechner der 7000er-Serie – wie schon die Vorgängermodelle – besaßen ei
 
 Fixpoint Zahlen wurden binär mit einem Bit für das Vorzeichen direkt gespeichert, einfache Fließkommazahlen wurden mit einem 8-Bit Exponenten und einer 27-Bit-Mantisse dargestellt. Double-Float (neu eingeführt mit der IBM 7094) hatten ebenfalls einen 8-Bit Exponenten und eine 54-Bit-Mantisse.
 
-Alphanumerische Werte (das was man heute mit `Strings` bezeichnet) wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort.
+Alphanumerische Werte (das, was man heute mit `strings` oder `char` bezeichnet) wurden im 6-Bit-BCD-Format gespeichert, 6 Werte in einem Wort.
 
 ## SLIPs Spracheigenschaften
 
-Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im *Computer Development Laboratory* der *General Electric Corporation*, wo er FORTRAN-SLIP auf einer IBM 7094 entwickelte, 1963 ging er zum *Massachusetts Institute of Technology* (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA, davor hatte er SLIP auf einer mit CTSS modifizierten IBM 7094 in MAD implementiert. Zwischen 1968 und 1969 hatte er dann ncoh am MIT SLIP noch einmal nach Algol 68 übertragen. Danach verschwindet SLIP im Dunkel der frühen Informatikgeschichte.
+Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im *Computer Development Laboratory* der *General Electric Corporation*, wo er FORTRAN-SLIP auf einer IBM 7094 entwickelte, 1963 ging er zum *Massachusetts Institute of Technology* (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA, davor hatte er SLIP auf einer mit CTSS modifizierten IBM 7094 in MAD implementiert. Zwischen 1968 und 1969 hatte er dann noch am MIT SLIP noch einmal nach Algol 68 übertragen. Danach verschwindet SLIP im Dunkel der frühen Informatikgeschichte.
 
 SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.
 
@@ -108,7 +108,7 @@ Jede Liste besitzt nur einen **Header** mit der `ID=2`. Das zweite Element eines
 
 ![Ein Listen-Header](images/listheader.png)
 
-  * In `LSTMRK` stehen dem Nutzer zwei Bit, die der Programmierer für Markierungen nutzen kann
+  * In `LSTMRK` stehen dem Nutzer zwei Bit zur Verfügung, die der Programmierer für Markierungen nutzen kann
   * `DESCR. LIST` zeigt auf eine Listenbeschreibung (einen Hash) -- wenn vorhanden
   * Der `REF. COUNT` zeigt an, wie oft diese Liste als eine Sub-Liste verwendet wird
   * Wenn `ID=1` wurde durch Konvention `LNKL` und `LNKR` im Datumsbereich jeweils mit dem Namen einer (und nur einer) Liste belegt. So wurden Beziehungen zwischen Listen und Sublisten geknüpft.
@@ -128,7 +128,7 @@ Ein Sequencer ist ein Mechanismus, der eine Operation auf alle Zellen einer List
 
 ![Eine SLIP Reader-Zelle](images/reader.png)
 
-Ein *Sequencer* konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein *Reader* implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS holte. Dabei ist `LPNTR` die Adresse der aktuellen Zelle, `LOFRDR` ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, `LCNTR` ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und `link` zeigt auf den nächsten Reader im Stack. Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.
+Ein *Sequencer* konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein *Reader* implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS (*list of available spaces*, mehr dazu weiter unten) holte. Dabei ist `LPNTR` die Adresse der aktuellen Zelle, `LOFRDR` ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, `LCNTR` ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und `link` zeigt auf den nächsten Reader im Stack. Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.
 
 ### Description List
 
@@ -140,7 +140,7 @@ Da SLIPs Listen dynamisch generiert wurden, waren Routinen zur Speicherbelegung 
 
 Für die dynamische Speicherbelegung nutzte SLIP eine *list of available spaces* (LAVS). Genaugenommen ist dies keine SLIP-Liste, da diese nur in eine Richtung gelesen und geschrieben werden konnte.
 
-LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr referenziert wurde.
+Die LAVS besaß einen Referenzzähler, der auf Null fiel, wenn eine Liste nicht mehr referenziert wurde.
 
 Der Programmierer konnte festlegen, ob in diesem Falle die Liste vom Programm gelöscht und der Speicherplatz freigegeben wird oder ob sie im Speicher bleibt, weil sie später noch einmal benötigt wird.
 
@@ -171,23 +171,23 @@ Und sicher spielte das Hauptargument aller Programmierer seltsamer Dinge dabei e
 
 ## DYNAMO – eine interessante Parallele
 
-**DYNAMO** (**DYNA**mic **MO**dels) war eine Simulationssprache (mit begleitender graphischer Notation) für den Bereich System Dynamics. Die Sprache wurde 1958 unter der Leitung von *Jay Wright Forrester* am MIT entwickelt. Die erste Version war in Assembler für die IBM 704, 709 und 7090, DYNAMO II in AED-0, einer erweiterten Version von Algol 60, geschrieben und ab 1971 waren Dynamo II/F und Dynamo 3 in Gebrauch, die in FORTRAN implementiert worden waren.
+**DYNAMO** (**DYNA**mic **MO**dels) war eine Simulationssprache (mit begleitender graphischer Notation) für den Bereich *System Dynamics*. Die Sprache wurde 1958 unter der Leitung von *Jay Wright Forrester* am MIT entwickelt. Die erste Version war in Assembler für die IBM 704, 709 und 7090, DYNAMO II in AED-0, einer erweiterten Version von Algol 60, geschrieben und ab 1971 waren Dynamo II/F und Dynamo 3 in Gebrauch, die in FORTRAN implementiert worden waren.
 
 DYNAMO wurde bis Mitte der 1980 Jahre für die Simulation dynamischer Systeme genutzt, es gab Anfang der 1980 Jahre auch eine Version für Personal Computer (micro-Dynamo). Später gab es mit Stella ein graphisches Programmiersystem, daß intern wie DYNAMO rechnete und eine Implementierung in (Turbo-) Pascal und eine in Modula-2 (MacMETH an der ETH Zürich).
 
 Der erste Bericht »Die Grenzen des Wachstums« an den Club of Rome beruhte auf Simulationen, die mit DYNAMO durchgeführt worden waren.
 
-DYNAMO war im Gegensatz zu SLIP kein Sprachaufsatz, sondern eine eigenständige *Domain Specific Language* (DSL). Dennoch verleiteten mich die historischen Parallelen zwischen diesen beiden Sprachen zu meiner (falschen) Anfangshypothese, daß SLIP ebenfalls eine DSL gewesen sei.
+DYNAMO war im Gegensatz zu SLIP kein Sprachaufsatz, sondern eine eigenständige *Domain Specific Language* (DSL). Und so verleiteten mich die historischen Parallelen zwischen diesen beiden Sprachen zu meiner (falschen) Anfangshypothese, daß SLIP ebenfalls eine DSL gewesen sei.
 
 ## Und warum nicht LISP?
 
-Seit 1958 wurde LISP von *John McCarthy* am MIT entwickelt und von einer Gruppe von Studenten um McCarthy und *Marvin Minsky* (seit 1959 am MIT) intensiv genutzt und ersetzte dort das bis dahin verwendete IPL. LISP wurde zuerst auf einer IBM 704 des MIT entwickelt, nachdem die Gruppe aber feststellte, daß diese nicht gegnügend Speicher für ihre Programme besaß, auf einer DEC PDP-1 implementiert. Dann folgte eine PDP-6 und eine PDP-10.
+Seit 1958 wurde LISP von *John McCarthy* am MIT entwickelt und von einer Gruppe von Studenten um McCarthy und *Marvin Minsky* (seit 1959 am MIT) intensiv genutzt und ersetzte dort das bis dahin verwendete IPL-V. LISP wurde zuerst auf einer IBM 704 des MIT entwickelt, nachdem die Gruppe aber feststellte, daß diese nicht gegnügend Speicher für ihre Programme besaß, auf einer DEC PDP-1 implementiert. Dann folgte eine PDP-6 und eine PDP-10.
 
 1963 stieß *Jean Piaget* als Co-Direktor zu der Gruppe um Marvin Minsky, während McCarthy nach Stanford ging (wo er ebenfalls mit einer PDP-6 und später mit einer PDP-10 arbeiten konnte).
 
 Nilsons Buch »The Quest for Artificial Intelligence« läßt eine Art *Cultural Clash* zwischen der Mainframe-Fraktion am MIT (Weizenbaum, Forrester) und der jungen KI-Gruppe vermuten (»jung« im Sinne von »junges« Forschungsfeld, denn alle Beteiligten waren ungefähr im gleichen Alter).
 
-Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Er schreibt und zwar noch vor dem Kapitel über »zwanghafte Programmierer«[^macht]:
+Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich Weizenbaum skeptisch gegenüber »höheren« Programmiersprachen: Sie entfremde den Programmierer von den Maschinen-Details. Er (der Programmierer) wisse nicht mehr, wie die Maschine eine Operation durchführt. Er schreibt[^macht] und zwar noch vor dem berühmten Kapitel über »zwanghafte Programmierer«:
 
 [^macht]: [Weizenbaum 1980], Seite 144
 
@@ -217,7 +217,7 @@ Auf dem einen Stuhl saßen mit FORTRAN und ALGOL (und vorrübergehend auch MAD) 
 
 Auf dem zweiten Stuhl hockte LISP, die (neue) Sprache der KI, die weniger auf Mainframes, sondern mehr auf Workstations und MDT-Rechnern[^MDT] (und später auch auf Personalcomputern) das Forschungsfeld der Künstlichen Intelligenz dominierte.
 
-Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie *Nathan Ensmenger* feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten -- ALGOL in den USA (im Gegensatz zu Europa) eher als intelektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen[^ens2].
+Und dazwischen klemmte das arme, kleine SLIP, das -- obwohl von seinem Vater liebevoll gepflegt -- vermutlich von niemandem anderen als von Weizenbaum und seiner Gruppe genutzt wurde. Vielleicht hatte aber auch Weizenbaum mit seiner Preferenz auf ALGOL-ähnliche Sprachen einfach nur auf das falsche Pferd gesetzt. Denn wie *Nathan Ensmenger* feststellte, wurde -- auch wenn MAD und einige andere damalige Sprachentwicklungen davon profitierten -- ALGOL in den USA (im Gegensatz zu Europa) eher als intellektuelle Kuriosität denn als ernst zu nehmende Programmiersprache angesehen[^ens2].
 
 [^ens2]: [Ensmenger 2010], Seite 104
 
