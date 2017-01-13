@@ -24,6 +24,8 @@ Dieser Beitrag beschäftigt sich vornehmlich mit MAD-SLIP, wegen der dünnen Que
 
 Das Einbetten von SLIP in eine andere Programmiersprache hatte den Vorteil, daß der Programmierer, der mit der Wirtssprache vertraut war, keine neue Sprache lernen mußte, sondern nur die neu hinzugekommenen Routinen zur Listenverarbeitung.
 
+Ursprünglich bin ich davon ausgegangen, daß SLIP als komplett eigenständige Sprache für ein fest umrissenes Problemfeld entwickelt wurde, also eine domainspezifische Sprache (*domain-specific language* - DSL) sei. Die Entwicklung solcher DSLs war damals durchaus üblich (vergleiche den Abschnitt über DYNAMO weiter unten), aber SLIP ist eindeutig nur eine Sammlung von Routinen, die drei Mal für die Wirtssprachen FORTRAN, MAD und ALGOL neu geschrieben oder umgeschrieben wurden. Dabei waren die Namen der Routinen und ihre Funktionen in allen drei Wirtssprachen identisch.
+
 ### Die Entwicklung von MAD und (MAD-) SLIP
 
 MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die Wirtssprache **MAD**[^mad] (**M**ichigan **A**lgorithm **D**ecoder) war eine von ALGOL 58 beeinflußte Sprache, die unter anderem auf den IBM Mainframes der 7000er Serie lief. Am MIT wurde anfang der 1960-Jahre das Timesharing-Betriebssystem CTSS[^2] (Compatible Time-Sharing System) entwickelt. Es lief auf einer modifizierten IBM 7094 und wurde bis 1973 genutzt. Das »Compatible« im Namen bezog sich auf die Möglichkeit, eine unveränderte Kopie des *Fortran Monitor Systems* (FMS) im Hintergrund auszuführen. Dadurch war es möglich, die unter einem Stapelverarbeitungs-Betriebssystem entwickelten Programme auch unter dem Time-Sharing-Betriebssystem weiter zu nutzen.
@@ -90,7 +92,8 @@ Alphanumerische Werte (das, was man heute mit `strings` oder `char` bezeichnet) 
 
 Joseph Weizenbaum war von 1952 - 1963 Systemingenieur im *Computer Development Laboratory* der *General Electric Corporation*, wo er FORTRAN-SLIP auf einer IBM 7094 entwickelte, 1963 ging er zum *Massachusetts Institute of Technology* (MIT), zunächst als Associate Professor, ab 1970 als Professor für Computer Science und 1966 schrieb er dort ELIZA, davor hatte er SLIP auf einer mit CTSS modifizierten IBM 7094 in MAD implementiert. Zwischen 1968 und 1969 hatte er dann noch am MIT SLIP noch einmal nach Algol 68 übertragen. Danach verschwindet SLIP im Dunkel der frühen Informatikgeschichte.
 
-SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme.
+SLIPs Besonderheit war, daß es wirklich symmetrisch auf Listen operieren konnte. Die Listen hatten keine bevorzugte Orientierung und es gab jeweils symmetrische Befehle, um sowohl auf das erste, wie auch auf das letzte Element der Liste zugreifen zu können. SLIPs Listenelemente, Zellen genannt, hatten eine feste Größe und enthielten die Daten und keine Zeiger auf Daten. Die Größe war abhängig von der Wortlänge der Wirtssysteme. Listen sind eine Datenstruktur, die zueinander gehörende Objekte verketten. Listenelemente (in SLIP »Zellen«) sind linear, das heißt jede Zelle hat genau einen Nachfolger oder ist das letzte Element einer Liste. Normale (nichtsymmetrische Listen) können nur von einem Ende gelesen werden und jedes Element verweist auf das Nachfolgeelement (falls es nicht das letzte Element einer Liste ist). Symmetrische Listen können von beiden Enden gelesen werden, das heißt, jede Zelle verweist sowohl auf seinen Vorgänger als auch auf seinen Nachfolger – es sei denn, es ist das erste (keinen Vorgänger) oder das letzte (keinen Nachfolger – der Liste. Dabei ist es abhängig von der Leserichtung, ob ein Listenelement erstes oder letztes Element einer Liste ist.
+
 
 Ein **SLIP-Listenelement** bestand aus einem Wort-Paar, bestehend aus zwei aufeinanderfolgenden Speichereinheiten (Wörtern): Das erste Wort enthielt ein ID-Feld, ein LINKL- (link left) und ein LINKR- (link right) Feld:
 
@@ -130,6 +133,12 @@ Ein Sequencer ist ein Mechanismus, der eine Operation auf alle Zellen einer List
 
 Ein *Sequencer* konnte immer nur über eine Liste iterieren. Sollte auch über alle Sublisten iteriert werden, mußte ein *Reader* implementiert werden. Ein Reader ist wieder ein SLIP-Listenelement, daß sich seine Inhalte aus der LAVS (*list of available spaces*, mehr dazu weiter unten) holte. Dabei ist `LPNTR` die Adresse der aktuellen Zelle, `LOFRDR` ist die Adresse des Headers der (Sub-) Liste, über die gerade iteriert wird, `LCNTR` ist ein Zähler für die Tiefe der (Sub-) Listen, die gerade durchlaufen werden und `link` zeigt auf den nächsten Reader im Stack. Denn in einem SLIP-Programm konnten durchaus mehrere Reader existieren, die auch auf den gleichen Listen operieren konnten.
 
+![Beispielprogramm](images/beispielprogramm.png)
+
+Die Abbildung 7 zeigt ein kurzes Beispielprogramm[^bsp]. `TEXT` ist der Name einer Liste, die einen Absatz eines beliebigen, englischen Textes repräsentiert, wobei jeder Satz in einer Subliste steht und die einzelnen Worte aus Zellen dieser Subliste gebildet werden. Das Programm zählt, wie oft das Wort »ARE« in diesem Absatz vorkommt. In Zeile 1 wird `ARE` als Hollerith-Konstante initialisiert, die Zeile 2 liest `TEXT` von links nach rechts (LR) ein und weist den Inhalt der Variablen `K` zu. Zeile 3 initialisiert einen Zähler `J`, Zeile 4 implementiert einen Reader, der die Sublisten von `K` (ebenfalls von rechts nach links) durchsucht und X den Inhalt des gefundenen Wortes oder 0 zuweist, falls F entweder auf eine Nachfolgezelle zeigt oder keinen Wert besitzt. Besitzt `X` einen Wert ungleich 0 (Zeile 5) wird mit Zeile 6 fortgefahren, andernfalls das Programm verlassen. In Zeile 6 wird überprüft, ob der Wert von `X` gleich »ARE« ist. Wenn ja, wird mit Zeile 7 fortgefahren und der Wert von J inkrementiert. Falls nein, wird das nächste Element aus der Liste gelesen (Zeile 4). Wenn das Programm erfolgreich die Zeile 7 erreicht hat, wird es in Zeile 8 ebenfalls zurück zu Zeile 4 geschickt, um das nächste Element der Subliste(n) einzulesen.
+
+[^bsp]: [Smith 1967], Seite 404
+
 ### Description List
 
 Eine *Description List* ist ein Attribut-Wert-Paar (Hash, Dictionary), bestehend aus einem Zellen-Paar, die erste Zelle enthält das Attribut, die zweite Zelle den Wert. *Description Lists* sind keine eigenständigen Sublisten, sondern gehören zu dem Listenheader, der auf sie zeigt. Als Konsequenz können *Description Lists* nicht mit den SLIP-Listenbefehlen manipuliert werden. Für *Description Lists* besaß SLIP einen eigenen Satz von Befehlen.
@@ -165,7 +174,7 @@ SLIP war ursprünglich nicht für die KI-Forschung entwickelt worden, sondern al
 
 Für die Entwicklung von ELIZA war es nicht nur vorteilhaft, auf symmetrischen Listen operieren zu können, sondern es spielte mit Sicherheit eine große Rolle, daß MAD-SLIP sich durch das CTSS des MIT vom Stapelbetrieb befreien und im Dialog mit dem Nutzer laufen konnte. Das war zur damaligen Zeit neu und keineswegs selbstverständlich.
 
-SLIPs Listen -- obwohl für einen anderen Zweck (Graphen) entworfen -- unterstützten Weiszenbaum natürlich bei der Entwicklung von ELIZA. Denn bis FORTRAN 77 kannte FORTRAN keinen Datentyp `CHARACTER` und schon gar keinen Datentyp `STRING`, sondern nur die typlosen *Hollerith Konstanten*, mit denen eine Textverarbeitung nur sehr schwer zu implementieren war. Die Quellen der Original-ELIZA-Implementierung sind zwar verschollen, doch aufgrund der damaligen Wortgröße und der Größe der Listenzellen von SLIP ist davon auszugehen, daß jede Zelle einen Buchstaben (`CHARACTER`) enthielt und die Listen Wörter oder Phrasen darstellten, die dann mit den SLIP-Befehlen für die damalige Zeit recht komfortabel bearbeitet werden konnten. Denn auch wenn das Zusammensetzen der Wörter und Phrasen aus einzelnen Buchstaben-Zellen aus heutiger Sicht ziemlich mühsam ist, war es im Gegensatz zu den Hollerith-Konstanten damals ein riesiger Fortschritt.
+SLIPs Listen -- obwohl für einen anderen Zweck (Graphen) entworfen -- unterstützten Weiszenbaum natürlich bei der Entwicklung von ELIZA. Denn bis FORTRAN 77 kannte FORTRAN keinen Datentyp `CHARACTER` und schon gar keinen Datentyp `STRING`, sondern nur die typlosen *Hollerith Konstanten*, mit denen eine Textverarbeitung nur sehr schwer zu implementieren war. Die Quellen der Original-ELIZA-Implementierung sind zwar verschollen (vgl. den Beitrag von Berry in diesem Band), doch aufgrund der damaligen Wortgröße und der Größe der Listenzellen von SLIP ist davon auszugehen, daß jede Zelle einen Buchstaben (`CHARACTER`) enthielt und die Listen Wörter oder Phrasen darstellten, die dann mit den SLIP-Befehlen für die damalige Zeit recht komfortabel bearbeitet werden konnten. Denn auch wenn das Zusammensetzen der Wörter und Phrasen aus einzelnen Buchstaben-Zellen aus heutiger Sicht ziemlich mühsam ist, war es im Gegensatz zu den Hollerith-Konstanten damals ein riesiger Fortschritt.
 
 Und sicher spielte das Hauptargument aller Programmierer seltsamer Dinge dabei eine Rolle: »Weil es geht!« Denn SLIP war ein Kind von Joseph Weizenbaum und welcher Vater spielt nicht gerne mit seinem Kind.
 
@@ -195,7 +204,7 @@ Auch in »Die Macht der Computer und die Ohnmacht der Vernunft« äußert sich W
 
 Abseits dieser Frage ist dies auch aus dem Standpunkt eines Numerikers ein durchaus ernst zu nehmendes Argument: Wenn ein Programmierer nicht mehr weiß, daß zum Beispiel FORTRAN Matrizen (Arrays) intern spaltenweise, C dagegen reihenweise abspeichert, kann bei der Formulierung seines Algorithmusses unter Umständen schwere Fehler (zum Beispiel Rundungs- und Abschneidefehler) produzieren, obwohl der Algorithmus formal korrekt formuliert wurde.
 
-Außerdem erzählte *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft[^arpa]. Zu seiner antimilitaristischen Einstellung sagte Weizenbaum[^sief]:
+Außerdem berichtete *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gruppe um John McCarthy und Joseph Weizenbaum tiefgehende Differenzen darüber gab, was die Förderung der Forschung durch Militär und Rüstungsindustrie betrifft[^arpa]. Zu seiner antimilitaristischen Einstellung sagte Weizenbaum[^sief]:
 
 >[…] die Rolle des MIT in der Waffentwicklung haben mein kritisches Bewußtsein geweckt. Und als ich einmal angefangen hatte, in dieser Richtung nachzudenken, konnte ich nicht mehr aufhören.
 
@@ -203,7 +212,7 @@ Außerdem erzählte *Wolfgang Coy*[^coy] auf der Tagung, daß es zwischen der Gr
 
 [^sief]: [Siefkes 1999], Seite 46
 
-Es ist möglich, daß dies zu einem Zerwürfnis zwischen Weizenbaum und der Gruppe um McCarthy führte und dies eine der Gründe für den Widerwillen Weizenbaums gegenüber LISP war.
+Es ist möglich, daß dies zu dem von Coy genannten Zerwürfnis zwischen Weizenbaum und der Gruppe um McCarthy führte und dies eine der Gründe für den Widerwillen Weizenbaums gegenüber LISP war.
 
 [^coy]: Vgl. seinen Beitrag in diesem Band
 

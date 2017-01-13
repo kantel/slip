@@ -44,6 +44,8 @@ Vorteil, daß der Programmierer, der mit der Wirtssprache vertraut war,
 keine neue Sprache lernen mußte, sondern nur die neu hinzugekommenen
 Routinen zur Listenverarbeitung.
 
+Ursprünglich bin ich davon ausgegangen, daß SLIP als komplett eigenständige Sprache für ein fest umrissenes Problemfeld entwickelt wurde, also eine domainspezifische Sprache (domain-specific language - DSL) sei. Die Entwicklung solcher DSLs war damals durchaus üblich (vergleiche den Abschnitt über DYNAMO weiter unten), aber SLIP ist eindeutig nur eine Sammlung von Routinen, die drei Mal für die Wirtssprachen FORTRAN, MAD und ALGOL neu geschrieben oder umgeschrieben wurden. Dabei waren die Namen der Routinen und ihre Funktionen in allen drei Wirtssprachen identisch.
+
 ### Die Entwicklung von MAD und (MAD-) SLIP
 
 MAD-SLIP ist die Fassung von SLIP, in der ELIZA geschrieben wurde. Die
